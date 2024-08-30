@@ -12,7 +12,7 @@ Result Display: Shows the total carbon footprint and individual contributions fr
 **To get started with the Carbon Footprint Calculator, follow these steps:**
 
 1.```git clone https://github.com/yourusername/carbon-footprint-calculator.git```
-2.```cd carbon-footprint-calculator```
+2.```cd carbon_footprint```
 
 **Make sure your have required packages**
 3.```pip install -r requirements.txt ```
