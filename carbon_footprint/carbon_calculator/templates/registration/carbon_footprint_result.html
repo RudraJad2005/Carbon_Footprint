@@ -1,0 +1,111 @@
+{% extends "index.html" %}
+
+{% block content %}
+<header class="bg-white absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+            <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Your Company</span>
+                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company Logo">
+            </a>
+        </div>
+        <div class="flex lg:hidden">
+            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                <span class="sr-only">Open main menu</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+            <a href="#" class="text-sm font-semibold leading-6 text-black">Home</a>
+            <a href="#" class="text-sm font-semibold leading-6 text-black">Features</a>
+            <a href="#" class="text-sm font-semibold leading-6 text-black">About Us</a>
+            <a href="#" class="text-sm font-semibold leading-6 text-black">Contact</a>
+        </div>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a href="{% url 'login' %}" class="text-sm font-semibold leading-6 text-black">Log in <span aria-hidden="true">&rarr;</span></a>
+        </div>
+    </nav>
+</header>
+
+<body class="bg-gray-100 dark:bg-gray-700">
+    
+    
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full text-center mx-auto mb-20" style="margin-top: 140px;">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Carbon Footprint Result</h1>
+        <p class="text-xl text-gray-600 mb-4">Total carbon footprint: <span class="font-semibold">{{ total_carbon_footprint }}</span> kg CO2e/year</p>
+        <a href="{% url 'carbon_footprint_view' %}" class="text-blue-600 hover:underline text-lg">Calculate Again</a>
+        
+        <!-- Table -->
+        <div class="relative overflow-x-auto mt-8">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                    <th scope="col" class="px-6 py-3 rounded-s-lg">
+                        Description
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Amount
+                    </th>
+                    <th scope="col" class="px-6 py-3 rounded-e-lg">
+                        Unit
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Electricity
+                    </th>
+                    <td class="px-6 py-4">{{ electricity }}</td>
+                    <td class="px-6 py-4">{{ electricity_unit }}</td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Natural Gas
+                    </th>
+                    <td class="px-6 py-4">{{ natural_gas }}</td>
+                    <td class="px-6 py-4">{{ natural_gas_unit }}</td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Biomass
+                    </th>
+                    <td class="px-6 py-4">{{ biomass }}</td>
+                    <td class="px-6 py-4">{{ biomass_unit }}</td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Coal
+                    </th>
+                    <td class="px-6 py-4">{{ coal }}</td>
+                    <td class="px-6 py-4">{{ coal_unit }}</td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Heating Oil
+                    </th>
+                    <td class="px-6 py-4">{{ heating_oil }}</td>
+                    <td class="px-6 py-4">{{ heating_oil_unit }}</td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        LPG
+                    </th>
+                    <td class="px-6 py-4">{{ lpg }}</td>
+                    <td class="px-6 py-4">{{ lpg_unit }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="font-semibold text-gray-900 dark:text-white">
+                    <th scope="row" class="px-6 py-3 text-base">Total</th>
+                    <td class="px-6 py-3">{{ total_carbon_footprint }}</td>
+                    <td class="px-6 py-3">kg CO2e/year</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+</body>
+{% endblock %}
