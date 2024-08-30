@@ -111,7 +111,7 @@ def convert_to_co2e(value, unit, conversion_factor):
     Converts the given value to CO2e using the specified conversion factor.
     """
     if unit in conversion_factor:
-        return value * conversion_factor[unit]
+        return round(value * conversion_factor[unit])
     return 0
 
 def calculate_carbon_footprint(electricity, natural_gas, biomass, coal, heating_oil, lpg, units, conversion_factors):
@@ -128,12 +128,12 @@ def calculate_carbon_footprint(electricity, natural_gas, biomass, coal, heating_
     total_co2e += convert_to_co2e(heating_oil, units['heating_oil'], conversion_factors['heating_oil'])
     total_co2e += convert_to_co2e(lpg, units['lpg'], conversion_factors['lpg'])
 
-    return round(total_co2e, 2)
+    return total_co2e
 
 def carbon_footprint_view(request):
     # Example conversion factors (these should be based on real data)
     conversion_factors = {
-        'electricity': {'kWh': 0.233, 'kg': 0},
+        'electricity': {'kWh': 0.249, 'kg': 0},  # Updated conversion factor for electricity
         'natural_gas': {'kWh': 0.185, 'kg': 2.75},
         'biomass': {'kWh': 0.039, 'kg': 0.015},
         'coal': {'kWh': 0.341, 'kg': 2.42},
@@ -168,18 +168,18 @@ def carbon_footprint_view(request):
 
             return render(request, 'registration/carbon_footprint_result.html', {
                 'total_carbon_footprint': total_carbon_footprint,
-                'electricity': electricity,
-                'natural_gas': natural_gas,
-                'biomass': biomass,
-                'coal': coal,
-                'heating_oil': heating_oil,
-                'lpg': lpg,
-                'electricity_unit': units['electricity'],
-                'natural_gas_unit': units['natural_gas'],
-                'biomass_unit': units['biomass'],
-                'coal_unit': units['coal'],
-                'heating_oil_unit': units['heating_oil'],
-                'lpg_unit': units['lpg'],
+                'electricity': convert_to_co2e(electricity, units['electricity'], conversion_factors['electricity']),  # Display in whole numbers
+                'natural_gas': convert_to_co2e(natural_gas, units['natural_gas'], conversion_factors['natural_gas']),  # Display in whole numbers
+                'biomass': convert_to_co2e(biomass, units['biomass'], conversion_factors['biomass']),  # Display in whole numbers
+                'coal': convert_to_co2e(coal, units['coal'], conversion_factors['coal']),  # Display in whole numbers
+                'heating_oil': convert_to_co2e(heating_oil, units['heating_oil'], conversion_factors['heating_oil']),  # Display in whole numbers
+                'lpg': convert_to_co2e(lpg, units['lpg'], conversion_factors['lpg']),# Display in kg CO2e
+                'electricity_unit': 'kg CO2e/year',
+                'natural_gas_unit': 'kg CO2e/year',
+                'biomass_unit': 'kg CO2e/year',
+                'coal_unit': 'kg CO2e/year',
+                'heating_oil_unit': 'kg CO2e/year',
+                'lpg_unit': 'kg CO2e/year',
             })
         else:
             messages.error(request, 'Please correct the errors below.')
