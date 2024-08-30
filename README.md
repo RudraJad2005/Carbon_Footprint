@@ -11,18 +11,18 @@ Result Display: Shows the total carbon footprint and individual contributions fr
 ### Installation
 **To get started with the Carbon Footprint Calculator, follow these steps:**
 
-```git clone https://github.com/yourusername/carbon-footprint-calculator.git```
- ```cd carbon-footprint-calculator```
+1.```git clone https://github.com/yourusername/carbon-footprint-calculator.git```
+2.```cd carbon-footprint-calculator```
 
 **Make sure your have required packages**
-```pip install -r requirements.txt ```
+3.```pip install -r requirements.txt ```
 
 **Set Up the Database:**
 
 **Run the following command to apply database migrations: (optional)**
-```python manage.py migrate ```
+4.```python manage.py migrate ```
 
 **Run the Development Server:**
 Start the server with:
 
-```python manage.py runserver ```
+5.```python manage.py runserver ```
