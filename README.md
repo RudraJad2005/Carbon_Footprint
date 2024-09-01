@@ -12,6 +12,13 @@ Result Display: Shows the total carbon footprint and individual contributions fr
 **To get started with the Carbon Footprint Calculator, follow these steps:**
 
 1.```git clone https://github.com/yourusername/carbon-footprint-calculator.git```
+
+**Then create env file in your project directory (not inside any repository folder)**
+ 
+Install required packages like django and metplotlib. run this cmd to install package 
+
+```pip install django metplotlib```
+
 2.```cd carbon_footprint```
 
 **Make sure your have required packages**
