@@ -1,206 +1,248 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <link rel="stylesheet" href="./css/custom_style.css">
+</head>
+
+<body>
   {% block content %}
-  
-    <div class="bg-white">
-      <header class="absolute inset-x-0 top-0 z-50">
-        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-          <div class="flex lg:flex-1">
-            <a href="#" class="-m-1.5 p-1.5">
-              <span class="sr-only">Your Company</span>
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600" alt="Company Logo">
-            </a>
+
+  <div class="bg-white">
+
+    {% include 'navbar.html' %}
+
+    <div class="relative isolate px-6 pt-14 lg:px-8">
+      <img src="{% static 'images/foot.webp' %}" alt="Background Image"
+        class="absolute inset-0 -z-10 h-full w-full object-cover opacity-90">
+
+      <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+          <div
+            class="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white-900/10 hover:ring-green-900/20">
+            Discover your environmental impact. <a href="/carbon_footprint_form/"
+              class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Start
+              calculating <span aria-hidden="true">→</span></a>
           </div>
-          <div class="flex lg:hidden">
-            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-              <span class="sr-only">Open main menu</span>
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="hidden lg:flex lg:gap-x-12">
-            <a href="#" class="text-sm font-semibold leading-6 text-white">Home</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-white">Features</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-white">About Us</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-white">Contact</a>
-          </div>
-        </nav>
-      </header>
-  
-      <div class="relative isolate px-6 pt-14 lg:px-8">
-        <img src="{% static 'images/foot.webp' %}" alt="Background Image" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-90">
-  
-        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-          <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-white ring-1 ring-white-900/10 hover:ring-green-900/20">
-              Discover your environmental impact. <a href="/carbon_footprint_form/" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Start calculating <span aria-hidden="true">→</span></a>
-            </div>
-          </div>
-          <div class="text-center">
-            <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">Calculate Your Carbon Footprint</h1>
-            <p class="mt-6 text-lg leading-8 text-white">Understand your carbon footprint and take steps to reduce your environmental impact. Join us in making a difference.</p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
-              <a href="{% url 'carbon_footprint_view' %}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get Started</a>
-              <a href="#" class="text-sm font-semibold leading-6 text-white">Learn More <span aria-hidden="true">→</span></a>
-            </div>
+        </div>
+        <div class="text-center">
+          <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">Calculate Your Carbon Footprint</h1>
+          <p class="mt-6 text-lg leading-8 text-white">Understand your carbon footprint and take steps to reduce your
+            environmental impact. Join us in making a difference.</p>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <a href="{% url 'carbon_footprint_view' %}"
+              class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get
+              Started</a>
+            <a href="#" class="text-sm font-semibold leading-6 text-white">Learn More <span
+                aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
     </div>
-  
-    <!-- About Us Section -->
-    <main class="pb-100"> <!-- Added padding-bottom to create space for footer -->
-  
-      <section class="bg-white py-16">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold leading-tight text-green-600 mb-4">About Us</h2>
-            <p class="text-lg text-gray-700 mb-8">
-              At [Your Company], our mission is to empower individuals and organizations to understand and reduce their carbon footprint. We provide innovative tools and actionable insights designed to help you measure and minimize your environmental impact. Our goal is to support sustainable living and foster a healthier planet for future generations.
-            </p>
-            <p class="text-lg text-gray-700 mb-8">
-              With a focus on accuracy and usability, our carbon footprint calculator helps you track and reduce your emissions across various activities and sectors. We believe that everyone has a role to play in environmental stewardship, and we are committed to making sustainability both accessible and achievable.
-            </p>
-            <a href="/carbon_footprint_form/" class="inline-block rounded-md bg-green-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Start Reducing Your Footprint</a>
-          </div>
-          <div class="flex flex-col md:flex-row md:justify-between items-center md:space-x-8"> <!-- Added space-x-8 for horizontal spacing -->
-            <!-- Image Section -->
-            <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8"> <!-- Added pr-8 for padding-right on larger screens -->
-              <img src="/static/images/foot_image.jpg" alt="Our Team" class="w-full h-auto object-cover rounded-lg shadow-md">
-            </div>
-            <!-- Text Content -->
-            <div class="md:w-1/2">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Our Mission</h3>
-              <p class="text-gray-700 mb-8">
-                Our mission is to provide tools and resources that enable you to accurately assess and effectively reduce your carbon footprint. We are dedicated to promoting environmental awareness and encouraging actions that lead to a more sustainable future.
-              </p>
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Our Values</h3>
-              <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Environmental Responsibility: We prioritize eco-friendly practices and solutions in everything we do.</li>
-                <li>Transparency: We offer clear, reliable data and insights to help you make informed decisions.</li>
-                <li>Innovation: We continuously develop new methods and technologies to enhance our impact.</li>
-                <li>Community Engagement: We collaborate with individuals, businesses, and organizations to drive collective progress.</li>
-              </ul>
-            </div>
-          </div>
+  </div>
+
+  <!-- About Us Section -->
+  <main class="pb-100"> <!-- Added padding-bottom to create space for footer -->
+
+
+
+    <section class="bg-gray-50 py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-extrabold text-teal-700 mb-6" data-aos="fade-down" data-aos-duration="1000">Who We
+            Are</h2>
+          <p class="text-md text-gray-600 mb-10" data-aos="fade-down" data-aos-duration="1200">
+            At [Your Company], we are passionate about empowering people and organizations to take control of their
+            environmental impact. By offering cutting-edge tools and actionable insights, we strive to make
+            sustainability both understandable and achievable for all. Our commitment is to foster a world where
+            responsible choices lead to a thriving planet for generations to come.
+          </p>
+          <p class="text-md text-gray-600 mb-10" data-aos="fade-down" data-aos-duration="1400">
+            Our focus on precision and user experience drives the design of our carbon footprint calculator, enabling
+            you to measure and reduce emissions across all aspects of life. We believe that sustainable living should be
+            accessible to everyone, and our mission is to help make that a reality.
+          </p>
+          <a href="/carbon_footprint_form/"
+            class="inline-block rounded bg-teal-700 px-8 py-4 text-white font-medium hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2"
+            data-aos="fade-down" data-aos-duration="1600">Begin Your Sustainability Journey</a>
         </div>
-      </section>
-  
-      <div class="bg-white py-24 sm:py-32">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-          <div class="mx-auto max-w-2xl lg:text-center">
-            <h2 class="text-base font-semibold leading-7 text-green-600">Sustainability Made Simple</h2>
-            <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Key Features of Our Carbon Footprint Calculator</p>
-            <p class="mt-6 text-lg leading-8 text-gray-600">Empower yourself with insights to reduce your carbon footprint and contribute to a healthier planet. Discover how our tool helps you track and minimize your environmental impact.</p>
+        <div class="flex flex-col md:flex-row md:justify-around items-center md:space-x-12" data-aos="fade-down"
+          data-aos-duration="1800">
+          <!-- Visual Section -->
+          <div class="md:w-2/5 mb-12 md:mb-0">
+            <img src="/static/images/foot_image.jpg" alt="Our Commitment"
+              class="w-full h-auto object-cover rounded-lg shadow-lg" data-aos="zoom-in" data-aos-duration="2000">
           </div>
-          <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-            <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-              <div class="relative pl-16">
-                <dt class="text-base font-semibold leading-7 text-gray-900">
-                  <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
-                    </svg>
-                  </div>
-                  Accurate Carbon Tracking
-                </dt>
-                <dd class="mt-2 text-base leading-6 text-gray-600">Our tool provides precise calculations of your carbon emissions, giving you a clear understanding of your environmental impact.</dd>
-              </div>
-  
-              <div class="relative pl-16">
-                <dt class="text-base font-semibold leading-7 text-gray-900">
-                  <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
-                    </svg>
-                  </div>
-                  User-Friendly Interface
-                </dt>
-                <dd class="mt-2 text-base leading-6 text-gray-600">Navigate through our tool with ease thanks to a simple and intuitive design that makes tracking your footprint straightforward.</dd>
-              </div>
-  
-              <div class="relative pl-16">
-                <dt class="text-base font-semibold leading-7 text-gray-900">
-                  <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
-                    </svg>
-                  </div>
-                  Actionable Insights
-                </dt>
-                <dd class="mt-2 text-base leading-6 text-gray-600">Receive practical recommendations and tips to reduce your carbon footprint based on your calculated emissions.</dd>
-              </div>
-  
-              <div class="relative pl-16">
-                <dt class="text-base font-semibold leading-7 text-gray-900">
-                  <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
-                    <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
-                    </svg>
-                  </div>
-                  Ongoing Support
-                </dt>
-                <dd class="mt-2 text-base leading-6 text-gray-600">Our team is available to assist you with any questions or challenges you may face while using our tool.</dd>
-              </div>
-            </dl>
+          <!-- Mission and Values -->
+          <div class="md:w-3/5">
+            <h3 class="text-2xl font-semibold text-gray-900 mb-6" data-aos="fade-down" data-aos-duration="2200">Our
+              Purpose</h3>
+            <p class="text-md text-gray-600 mb-10" data-aos="fade-down" data-aos-duration="2400">
+              We are dedicated to providing the resources you need to accurately gauge and substantially decrease your
+              carbon footprint. Our purpose is to advance environmental consciousness and inspire actions that
+              contribute to a sustainable tomorrow.
+            </p>
+            <h3 class="text-2xl font-semibold text-gray-900 mb-6" data-aos="fade-down" data-aos-duration="2600">Core
+              Principles</h3>
+            <ul class="list-disc pl-6 space-y-4 text-gray-600" data-aos="fade-down" data-aos-duration="2800">
+              <li>Sustainability First: We prioritize eco-conscious practices in all our endeavors.</li>
+              <li>Clarity & Honesty: We are committed to delivering straightforward, trustworthy data and guidance.</li>
+              <li>Continuous Innovation: We are always exploring new ways to amplify our impact and drive progress.</li>
+              <li>Collaborative Action: We believe in the power of partnerships to achieve meaningful environmental
+                change.</li>
+            </ul>
           </div>
         </div>
       </div>
-  
-  
-      <div class="bg-white py-24 sm:py-32 mb-40">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-          <h2 class="text-center text-lg font-semibold leading-8 text-gray-900">Trusted by the world’s most innovative teams</h2>
-          <div class="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-            <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1" src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg" alt="Transistor" width="158" height="48">
-            <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1" src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg" alt="Reform" width="158" height="48">
-            <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1" src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg" alt="Tuple" width="158" height="48">
-            <img class="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1" src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg" alt="SavvyCal" width="158" height="48">
-            <img class="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1" src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-900.svg" alt="Statamic" width="158" height="48">
-          </div>
+    </section>
+
+
+    <div class="bg-white py-24 sm:py-32">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:text-center">
+          <h2 class="text-base font-semibold leading-7 text-green-600">Sustainability Made Simple</h2>
+          <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Key Features of Our Carbon
+            Footprint Calculator</p>
+          <p class="mt-6 text-lg leading-8 text-gray-600">Empower yourself with insights to reduce your carbon footprint
+            and contribute to a healthier planet. Discover how our tool helps you track and minimize your environmental
+            impact.</p>
+        </div>
+        <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+          <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+            <div class="relative pl-16">
+              <dt class="text-base font-semibold leading-7 text-gray-900">
+                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+                  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
+                  </svg>
+                </div>
+                Accurate Carbon Tracking
+              </dt>
+              <dd class="mt-2 text-base leading-6 text-gray-600">Our tool provides precise calculations of your carbon
+                emissions, giving you a clear understanding of your environmental impact.</dd>
+            </div>
+
+            <div class="relative pl-16">
+              <dt class="text-base font-semibold leading-7 text-gray-900">
+                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+                  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
+                  </svg>
+                </div>
+                User-Friendly Interface
+              </dt>
+              <dd class="mt-2 text-base leading-6 text-gray-600">Navigate through our tool with ease thanks to a simple
+                and intuitive design that makes tracking your footprint straightforward.</dd>
+            </div>
+
+            <div class="relative pl-16">
+              <dt class="text-base font-semibold leading-7 text-gray-900">
+                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+                  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
+                  </svg>
+                </div>
+                Actionable Insights
+              </dt>
+              <dd class="mt-2 text-base leading-6 text-gray-600">Receive practical recommendations and tips to reduce
+                your carbon footprint based on your calculated emissions.</dd>
+            </div>
+
+            <div class="relative pl-16">
+              <dt class="text-base font-semibold leading-7 text-gray-900">
+                <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600">
+                  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 6l6 6-6 6"></path>
+                  </svg>
+                </div>
+                Ongoing Support
+              </dt>
+              <dd class="mt-2 text-base leading-6 text-gray-600">Our team is available to assist you with any questions
+                or challenges you may face while using our tool.</dd>
+            </div>
+          </dl>
         </div>
       </div>
-      
-
-      <div class="flex flex-nowrap overflow-x-auto gap-x-7 p-9 mb-40 ml-8">
-
-        <a href="#" class="bg-indigo-500 shadow-xl flex flex-none items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
-          <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg" src="{% static '/images/foot.webp' %}" alt="">
-          <div class="flex flex-col justify-between p-4 leading-normal">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy technology acquisitions 2021</h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-            <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
-          </div>
-        </a>
-        <a href="#" class="bg-indigo-500 shadow-xl flex flex-none items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
-          <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg" src="{% static '/images/foot.webp' %}" alt="">
-          <div class="flex flex-col justify-between p-4 leading-normal">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy technology acquisitions 2021</h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-            <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
-          </div>
-        </a>
-        <a href="#" class="bg-indigo-500 shadow-xl flex flex-none items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
-          <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg" src="{% static '/images/foot.webp' %}" alt="">
-          <div class="flex flex-col justify-between p-4 leading-normal">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy technology acquisitions 2021</h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-            <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
-          </div>
-        </a>
     </div>
-  
-  
-    </main>
+
+
+    <div class="bg-white py-24 sm:py-32 mb-40">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <h2 class="text-center text-lg font-semibold leading-8 text-gray-900">Trusted by the world’s most innovative
+          teams</h2>
+        <div
+          class="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+          <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+            src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg" alt="Transistor" width="158"
+            height="48">
+          <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+            src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg" alt="Reform" width="158" height="48">
+          <img class="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+            src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg" alt="Tuple" width="158" height="48">
+          <img class="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
+            src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg" alt="SavvyCal" width="158"
+            height="48">
+          <img class="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
+            src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-900.svg" alt="Statamic" width="158"
+            height="48">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="flex flex-nowrap overflow-x-auto gap-x-7 p-9 mb-40 ml-8">
+
+      <a href="#"
+        class="bg-white shadow-xl flex flex-none items-center border border-gray-200 rounded-lg md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
+        <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg"
+          src="{% static '/images/foot.webp' %}" alt="">
+        <div class="flex flex-col justify-between p-4 leading-normal">
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy
+            technology acquisitions 2021</h5>
+          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology
+            acquisitions of 2021 so far, in reverse chronological order.</p>
+          <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
+        </div>
+      </a>
+      <a href="#"
+        class="bg-white shadow-xl flex flex-none items-center border border-gray-200 rounded-lg md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
+        <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg"
+          src="{% static '/images/foot.webp' %}" alt="">
+        <div class="flex flex-col justify-between p-4 leading-normal">
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy
+            technology acquisitions 2021</h5>
+          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology
+            acquisitions of 2021 so far, in reverse chronological order.</p>
+          <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
+        </div>
+      </a>
+      <a href="#"
+        class="bg-white shadow-xl flex flex-none items-center border border-gray-200 rounded-lg md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 h-[350px]">
+        <img class="object-cover w-48 h-full rounded-t-lg md:rounded-none md:rounded-s-lg"
+          src="{% static '/images/foot.webp' %}" alt="">
+        <div class="flex flex-col justify-between p-4 leading-normal">
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mt-[100px]">Noteworthy
+            technology acquisitions 2021</h5>
+          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology
+            acquisitions of 2021 so far, in reverse chronological order.</p>
+          <button class="w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Read More</button>
+        </div>
+      </a>
+    </div>
+
+
+  </main>
   {% endblock %}
   <footer class="bg-gray-800 text-white py-12 px-4 lg:px-8">
     <div class="container mx-auto">
@@ -214,22 +256,28 @@
           <div class="flex space-x-4">
             <a href="#" class="text-gray-400 hover:text-white">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-2.13 17.898h-2.97v-7.93h2.97v7.93zm-1.485-8.941c-.956 0-1.607-.672-1.607-1.482s.652-1.482 1.608-1.482 1.607.672 1.607 1.482-.652 1.482-1.607 1.482zm11.484 8.941h-2.97v-4.413c0-1.053-.373-1.773-1.306-1.773-.708 0-1.13.475-1.316.934-.068.167-.086.398-.086.632v5.302h-2.97v-7.93h2.97v1.125c.404-.62 1.13-1.506 2.726-1.506 2.095 0 3.665 1.372 3.665 4.325v4.986z"></path>
+                <path
+                  d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-2.13 17.898h-2.97v-7.93h2.97v7.93zm-1.485-8.941c-.956 0-1.607-.672-1.607-1.482s.652-1.482 1.608-1.482 1.607.672 1.607 1.482-.652 1.482-1.607 1.482zm11.484 8.941h-2.97v-4.413c0-1.053-.373-1.773-1.306-1.773-.708 0-1.13.475-1.316.934-.068.167-.086.398-.086.632v5.302h-2.97v-7.93h2.97v1.125c.404-.62 1.13-1.506 2.726-1.506 2.095 0 3.665 1.372 3.665 4.325v4.986z">
+                </path>
               </svg>
             </a>
             <a href="#" class="text-gray-400 hover:text-white">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19.04 3.5h-14.08C3.99 3.5 3 4.49 3 5.84v12.32c0 1.35.99 2.34 2.96 2.34h14.08c1.97 0 2.96-.99 2.96-2.34V5.84c0-1.35-.99-2.34-2.96-2.34zM16 14h-3v6h-2v-6H8v-2h3V8.5C11 6.5 12.5 5 14.5 5c1.5 0 2.5.5 2.5.5v2h-1.5c-.75 0-1.5.5-1.5 1.5V12h3l-2 2z"></path>
+                <path
+                  d="M19.04 3.5h-14.08C3.99 3.5 3 4.49 3 5.84v12.32c0 1.35.99 2.34 2.96 2.34h14.08c1.97 0 2.96-.99 2.96-2.34V5.84c0-1.35-.99-2.34-2.96-2.34zM16 14h-3v6h-2v-6H8v-2h3V8.5C11 6.5 12.5 5 14.5 5c1.5 0 2.5.5 2.5.5v2h-1.5c-.75 0-1.5.5-1.5 1.5V12h3l-2 2z">
+                </path>
               </svg>
             </a>
             <a href="#" class="text-gray-400 hover:text-white">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2C6.485 2 2 6.485 2 12s4.485 10 10 10 10-4.485 10-10S17.515 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm1-13v6h-2V7h2zm0 8v2h-2v-2h2z"></path>
+                <path
+                  d="M12 2C6.485 2 2 6.485 2 12s4.485 10 10 10 10-4.485 10-10S17.515 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm1-13v6h-2V7h2zm0 8v2h-2v-2h2z">
+                </path>
               </svg>
             </a>
           </div>
         </div>
-  
+
         <!-- Quick Links -->
         <div>
           <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
@@ -240,7 +288,7 @@
             <li><a href="#" class="hover:text-gray-400">Contact</a></li>
           </ul>
         </div>
-  
+
         <!-- Contact Info -->
         <div>
           <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
@@ -250,23 +298,94 @@
             <li>1234 Elm Street, Suite 567<br>City, State, 12345</li>
           </ul>
         </div>
-  
+
         <!-- Newsletter Signup -->
         <div>
           <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
           <form class="flex flex-col">
             <label for="newsletter-email" class="sr-only">Email</label>
-            <input id="newsletter-email" name="newsletter-email" type="email" placeholder="Your email address" required="" class="mb-4 w-full rounded-md border-gray-300 p-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-            <button type="submit" class="w-full rounded-md bg-green-600 px-4 py-2 text-white font-semibold shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <input id="newsletter-email" name="newsletter-email" type="email" placeholder="Your email address"
+              required=""
+              class="mb-4 w-full rounded-md border-gray-300 p-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <button type="submit"
+              class="w-full rounded-md bg-green-600 px-4 py-2 text-white font-semibold shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
               Subscribe
             </button>
           </form>
         </div>
       </div>
-  
+
       <div class="mt-12 border-t border-gray-700 pt-6 text-center text-sm">
         <p>© 2024 Your Company. All rights reserved.</p>
       </div>
     </div>
   </footer>
-  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const toggleButton = document.getElementById('toggle-button');
+      const dropdownMenu = document.getElementById('dropdown-1');
+      const dropdownIcon = toggleButton.querySelector('svg');
+
+      toggleButton.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('hidden');
+        dropdownIcon.classList.toggle('rotate-180');
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+          dropdownMenu.classList.add('hidden');
+          dropdownIcon.classList.remove('rotate-180');
+        }
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    console.log('DOM fully loaded and parsed');
+
+    // Initialize AOS
+    AOS.init();
+    console.log('AOS initialized');
+
+    // Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        console.log('Entry:', entry);
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const fadeElements = document.querySelectorAll('.fade-on-scroll');
+    console.log('Fade Elements:', fadeElements);
+    fadeElements.forEach(el => observer.observe(el));
+
+    const scrollElements = document.querySelectorAll('.scroll-effect');
+    console.log('Scroll Elements:', scrollElements);
+    const handleScroll = () => {
+      scrollElements.forEach(el => {
+        const scrollPosition = window.scrollY;
+        const elementPosition = el.offsetTop;
+        const elementHeight = el.offsetHeight;
+
+        if (scrollPosition >= elementPosition - window.innerHeight && scrollPosition <= elementPosition + elementHeight) {
+          el.classList.add('scroll-effect-active');
+        } else {
+          el.classList.remove('scroll-effect-active');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call on load to apply effects immediately
+});
+
+  </script>
+</body>

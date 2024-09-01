@@ -1,0 +1,399 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+
+<head>
+    <!-- Add Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap">
+    <script type="module" src="../javaScript/about_us.js"></script>
+</head>
+
+<style>
+    .custom-card,
+    .custom-card-2,
+    .custom-card-3 {
+        background-color: white;
+        color: black;
+        transition: all 0.3s ease;
+    }
+
+    .custom-card:hover,
+    .custom-card-2:hover,
+    .custom-card-3:hover,
+    .hover-effect:hover {
+        transform: scale(1.05);
+        background-color: #0091E1;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .hover-effect {
+        background-color: white;
+    }
+
+    .gradient-text {
+        background: linear-gradient(to right, #0091E1, #FFD3F4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .gradient-text-2 {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .bullet-list {
+        list-style-type: disc;
+        /* Use disc for bullets */
+        padding-left: 20px;
+        /* Space for bullets */
+        margin-top: 0;
+        /* Remove default margin */
+        margin-bottom: 20px;
+        /* Space between list items */
+    }
+
+    .bullet-list li {
+        margin-bottom: 10px;
+        /* Space between items */
+        font-size: 1.25rem;
+        /* Font size for better readability */
+    }
+
+    .fadeIn {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+
+
+    .fade-on-scroll.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .scroll-effect {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+    .scroll-effect-active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+<header class="bg-white text-black-100 fixed w-full top-0 z-50">
+    {% include 'navbar.html' %}
+</header>
+<section class="fade-on-scroll opacity-0 transform translate-y-8 bg-white dark:bg-gray-800 mt-10">
+    <div class="container mx-auto px-4 py-16 text-left">
+        <div class="scroll-effect text-center mb-8 mt-30">
+            <h2 class="gradient-text-2 text-6xl font-bold text-gray-900 dark:text-white mb-10">Our Commitment to a
+                Greener Future</h2>
+            <p class="text-lg text-gray-500 dark:text-gray-400">At our core, we're dedicated to reducing carbon
+                emissions and promoting sustainable practices. From innovative solutions to community engagement, we're
+                here to make a difference.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-[150px]">
+            <div class="custom-card flex flex-col items-start p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Innovative Solutions</h3>
+                <p class="">We develop cutting-edge technologies to reduce carbon footprints and enhance energy
+                    efficiency. Our solutions are designed to meet the needs of a rapidly changing world.</p>
+            </div>
+            <div class="custom-card-2 flex flex-col items-start p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Community Engagement</h3>
+                <p>We believe in the power of community to drive change. Our initiatives focus on raising awareness and
+                    encouraging sustainable practices at the grassroots level.</p>
+            </div>
+            <div class="custom-card-3 flex flex-col items-start p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Sustainable Partnerships</h3>
+                <p>We collaborate with businesses, governments, and organizations to create impactful partnerships that
+                    drive environmental progress and foster a greener future.</p>
+            </div>
+            <div class="custom-card-3 flex flex-col items-start p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Global Impact</h3>
+                <p>Our reach extends worldwide, as we strive to influence global policies and practices to support a
+                    sustainable and eco-friendly planet.</p>
+            </div>
+        </div>
+
+        <div class="scroll-effect flex justify-start md:flex-row items-center mt-[200px] gap-x-60 w-full mb-[200px]">
+            <div class="flex flex-col items-start border-l-2 border-gray-300 pl-4">
+                <h3 class="text-5xl font-bold gradient-text dark:text-white">2012</h3>
+                <p class="text-gray-500 dark:text-gray-400 mt-3 whitespace-nowrap">Our organization was founded</p>
+                <hr class="w-1 border-t border-gray-300 my-2" />
+            </div>
+            <div class="flex flex-col items-start border-l-2 border-gray-300 pl-4">
+                <h3 class="text-5xl font-bold gradient-text dark:text-white">100+</h3>
+                <p class="text-gray-500 dark:text-gray-400 mt-3 whitespace-nowrap">Sustainable projects launched</p>
+                <hr class="w-1 border-t border-gray-300 my-2" />
+            </div>
+            <div class="flex flex-col items-start border-l-2 border-gray-300 pl-4">
+                <h3 class="text-5xl font-bold gradient-text dark:text-white">50k</h3>
+                <p class="text-gray-500 dark:text-gray-400 mt-3 whitespace-nowrap">People impacted globally</p>
+                <hr class="w-1 border-t border-gray-300 my-2" />
+            </div>
+            <div class="flex flex-col items-start border-l-2 border-gray-300 pl-4">
+                <h3 class="text-5xl font-bold gradient-text dark:text-white">$30M</h3>
+                <p class="text-gray-500 dark:text-gray-400 mt-3 whitespace-nowrap">Invested in green technologies</p>
+                <hr class="w-1 border-t border-gray-300 my-2" />
+            </div>
+        </div>
+
+        <div class="scroll-effect flex justify-center mt-10">
+            <div class="relative w-[1500px] h-[600px] bg-gray-800 rounded-lg overflow-hidden group">
+                <img src="{% static 'images/foot.webp' %}" alt="Our Impact on Sustainability"
+                    class="w-full h-full object-cover transition-opacity duration-300" />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300">
+                </div>
+                <div
+                    class="absolute inset-0 flex mt-40 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <h3 class="text-white text-4xl font-bold">Our Impact on Sustainability</h3>
+                </div>
+                <div
+                    class="absolute inset-x-0 bottom-10 flex justify-center items-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gap-[200px]">
+                    <div
+                        class="text-white transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                        <h3
+                            class="text-xl border-l-2 pl-4 border-white h-10 group-hover:h-14 transition-all duration-500 ease-in-out">
+                            Reducing Emissions</h3>
+                        <p class="mt-2 text-sm">We focus on minimizing our carbon footprint through innovative
+                            technologies and sustainable practices.</p>
+                    </div>
+                    <div
+                        class="text-white transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                        <h3
+                            class="text-xl border-l-2 pl-4 border-white h-10 group-hover:h-14 transition-all duration-500 ease-in-out">
+                            Sustainable Practices</h3>
+                        <p class="mt-2 text-sm">Our operations are designed to reduce waste and promote recycling and
+                            reuse of materials.</p>
+                    </div>
+                    <div
+                        class="text-white transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                        <h3
+                            class="text-xl border-l-2 pl-4 border-white h-10 group-hover:h-14 transition-all duration-500 ease-in-out">
+                            Green Energy</h3>
+                        <p class="mt-2 text-sm">We are committed to utilizing renewable energy sources to power our
+                            facilities and reduce our reliance on fossil fuels.</p>
+                    </div>
+                    <div
+                        class="text-white transform translate-y-10 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                        <h3
+                            class="text-xl border-l-2 pl-4 border-white h-10 group-hover:h-14 transition-all duration-500 ease-in-out">
+                            Carbon Offsetting</h3>
+                        <p class="mt-2 text-sm">Through strategic partnerships, we invest in carbon offset projects that
+                            contribute to global sustainability efforts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="scroll-effect flex flex-col mt-[150px]">
+            <div class="mb-4">
+                <h1 class="text-5xl font-bold">Our Core Values</h1>
+            </div>
+            <div class="pr-8 mt-3">
+                <p class="text-xl font-normal text-left leading-loose">
+                    <i class="fas fa-leaf text-green-500 mr-2"></i>Commitment to Sustainability: We are dedicated to
+                    reducing our environmental footprint and promoting eco-friendly practices in all aspects of our
+                    operations.
+                </p>
+                <p class="text-xl font-normal text-left">
+                    <i class="fas fa-handshake text-green-500 mr-2"></i>Integrity and Transparency: We operate with
+                    honesty and openness, ensuring that our actions align with our values and goals.
+                </p>
+            </div>
+        </div>
+
+        <div class="scroll-effect pr-8 mt-3 ml-8">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 mt-20">
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Embrace Innovation: We strive to stay at the forefront of technological advancements to drive
+                    progress and efficiency in our sustainability efforts.
+                </li>
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Foster Collaboration: We work closely with stakeholders, partners, and communities to achieve our
+                    shared environmental goals and create lasting impact.
+                </li>
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Promote Education: We believe in educating and empowering individuals and organizations to make
+                    informed decisions for a more sustainable future.
+                </li>
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Lead by Example: We take pride in setting high standards for ourselves and leading by example to
+                    inspire others to adopt sustainable practices.
+                </li>
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Ensure Accountability: We are committed to being accountable for our actions and progress, regularly
+                    reporting on our environmental performance and outcomes.
+                </li>
+                <li class="flex items-start text-lg">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12l6 6L18 6" />
+                    </svg>
+                    Advocate for Policy Change: We actively engage in policy advocacy to drive systemic change and
+                    promote sustainable practices on a broader scale.
+                </li>
+            </ul>
+            <div class="mt-8 flex justify-between">
+                <a href="#"
+                    class="inline-block px-6 py-3 text-lg font-semibold text-white rounded-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    Learn More
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="scroll-effect relative isolate overflow-hidden bg-gray-900 py-16 sm:py-24 lg:py-32 mt-40 rounded-3xl">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+                    <div class="max-w-xl lg:max-w-lg">
+                        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Subscribe to our
+                            newsletter.</h2>
+                        <p class="mt-4 text-lg leading-8 text-gray-300">Nostrud amet eu ullamco nisi aute in ad minim
+                            nostrud adipisicing velit quis. Duis tempor incididunt dolore.</p>
+                        <div class="mt-6 flex max-w-md gap-x-4">
+                            <label for="email-address" class="sr-only">Email address</label>
+                            <input id="email-address" name="email" type="email" autocomplete="email" required
+                                class="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                placeholder="Enter your email">
+                            <button type="submit"
+                                class="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Subscribe</button>
+                        </div>
+                    </div>
+                    <dl class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+                        <div class="flex flex-col items-start">
+                            <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                                </svg>
+                            </div>
+                            <dt class="mt-4 font-semibold text-white">Weekly articles</dt>
+                            <dd class="mt-2 leading-7 text-gray-400">Non laboris consequat cupidatat laborum magna.
+                                Eiusmod non irure cupidatat duis commodo amet.</dd>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15m.002 0h-.002" />
+                                </svg>
+                            </div>
+                            <dt class="mt-4 font-semibold text-white">No spam</dt>
+                            <dd class="mt-2 leading-7 text-gray-400">Officia excepteur ullamco ut sint duis proident non
+                                adipisicing. Voluptate incididunt anim.</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+            <div class="scroll-effect absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6"
+                aria-hidden="true">
+                <div class="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
+                    style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="scroll-effect bg-white py-24 sm:py-32 mt-20">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <!-- Container for the heading and logos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Heading Section -->
+                    <div class="flex flex-col justify-start -ml-20">
+                        <h1
+                            class="text-xl md:text-3xl lg:text-4xl font-bold leading-tight text-gray-900 whitespace-nowrap">
+                            Trusted by the world's most innovative teams
+                        </h1>
+                        <p class="mt-4 text-lg text-gray-600">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, egestas tempus tellus etiam
+                            sed. Quam a scelerisque amet ullamcorper eu enim et fermentum, augue.
+                        </p>
+                    </div>
+
+                    <!-- Logos Section -->
+                    <div class="space-y-10">
+                        <!-- First Row of Logos -->
+                        <div class="flex flex-row-reverse gap-8">
+                            <div class="flex justify-center">
+                                <img class="max-h-12 w-full object-contain"
+                                    src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg"
+                                    alt="Transistor" width="158" height="48">
+                            </div>
+                            <div class="flex justify-center">
+                                <img class="max-h-12 w-full object-contain"
+                                    src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg" alt="Reform"
+                                    width="158" height="48">
+                            </div>
+                        </div>
+
+                        <!-- Second Row of Logos -->
+                        <div class="flex flex-row-reverse gap-8">
+                            <div class="flex justify-center">
+                                <img class="max-h-12 w-full object-contain"
+                                    src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg" alt="Tuple"
+                                    width="158" height="48">
+                            </div>
+                            <div class="flex justify-center">
+                                <img class="max-h-12 w-full object-contain"
+                                    src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg"
+                                    alt="SavvyCal" width="158" height="48">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,110 +1,22 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-import bcrypt
-from email_validator import validate_email, EmailNotValidError
 from .forms import CarbonFootprintForm
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
-
-
-def get_user(email):
-    try:
-        return User.objects.get(email=email)
-    except User.DoesNotExist:
-        return None
-
-def create_user(user_data):
-    try:
-        user = User.objects.create(
-            first_name=user_data["first_name"],
-            last_name=user_data["last_name"],
-            email=user_data["email"],
-            password=user_data["password"]
-        )
-        return {"success": True}
-    except Exception as e:
-        return {"error": str(e)}
+from .models import DataPoint
+import matplotlib.pyplot as plt
+import io
+import base64
 
 def home(request):
     return render(request, 'index.html') 
 
-def hash_password(password):
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+def about(request):
+    return render(request, 'registration/about.html')
 
-def check_password(stored_password, provided_password):
-    return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password)
+def data_r(request):
+    return render(request, 'registration/data_represent.html')
 
-def validate_email_address(email):
-
-    import re
-    return re.match(r"[^@]+@[^@]+\.[^@]+", email) is not None
-
-
-def login_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        if not email or not password:
-            messages.error(request, "Email and password are required.")
-            return redirect('login')  # Redirect to login page
-
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            auth_login(request, user)
-            messages.success(request, "Login successful.")
-            return redirect('index')  # Redirect to home page after login
-        else:
-            messages.error(request, "Invalid email or password.")
-            return redirect('login')  # Redirect to login page
-    return render(request, 'registration/login.html')
-
-def signup_view(request):
-    if request.method == 'POST':
-        first_name = request.POST.get('first-name')
-        last_name = request.POST.get('last-name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm-password')
-
-        # Validate form data
-        if not email or not password or not confirm_password:
-            messages.error(request, "Email, password, and confirm password are required.")
-            return redirect('signup')
-
-        if not validate_email_address(email):
-            messages.error(request, "Invalid email format.")
-            return redirect('signup')
-
-        if password != confirm_password:
-            messages.error(request, "Passwords do not match.")
-            return redirect('signup')
-
-        if get_user(email):
-            messages.error(request, "This email is already in use.")
-            return redirect('signup')
-
-        hashed_password = make_password(password)  # Using Django's built-in password hashing
-        user_data = {
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-            "password": hashed_password
-        }
-
-        result = create_user(user_data)
-
-        if 'error' in result:
-            messages.error(request, result['error'])
-            return redirect('signup')
-        else:
-            messages.success(request, "Signup successful! Please login.")
-            return redirect('login')
-
-    return render(request, 'registration/signup.html')
-
-
+def resources(request):
+    return render(request, 'registration/resources.html')
 
 def convert_to_co2e(value, unit, conversion_factor):
     """
@@ -131,9 +43,9 @@ def calculate_carbon_footprint(electricity, natural_gas, biomass, coal, heating_
     return total_co2e
 
 def carbon_footprint_view(request):
-    # Example conversion factors (these should be based on real data)
+    # Example conversion factors
     conversion_factors = {
-        'electricity': {'kWh': 0.249, 'kg': 0},  # Updated conversion factor for electricity
+        'electricity': {'kWh': 0.249, 'kg': 0},
         'natural_gas': {'kWh': 0.185, 'kg': 2.75},
         'biomass': {'kWh': 0.039, 'kg': 0.015},
         'coal': {'kWh': 0.341, 'kg': 2.42},
@@ -164,26 +76,117 @@ def carbon_footprint_view(request):
                 electricity, natural_gas, biomass, coal, heating_oil, lpg, units, conversion_factors
             )
 
-            print(f"Electricity: {electricity}, Natural Gas: {natural_gas}, Biomass: {biomass}, Coal: {coal}, Heating Oil: {heating_oil}, LPG: {lpg}")  # Debugging
+            # Store the data in session
+            request.session['carbon_data'] = {
+                'electricity': electricity,
+                'natural_gas': natural_gas,
+                'biomass': biomass,
+                'coal': coal,
+                'heating_oil': heating_oil,
+                'lpg': lpg,
+                'units': units
+            }
 
-            return render(request, 'registration/carbon_footprint_result.html', {
-                'total_carbon_footprint': total_carbon_footprint,
-                'electricity': convert_to_co2e(electricity, units['electricity'], conversion_factors['electricity']),  # Display in whole numbers
-                'natural_gas': convert_to_co2e(natural_gas, units['natural_gas'], conversion_factors['natural_gas']),  # Display in whole numbers
-                'biomass': convert_to_co2e(biomass, units['biomass'], conversion_factors['biomass']),  # Display in whole numbers
-                'coal': convert_to_co2e(coal, units['coal'], conversion_factors['coal']),  # Display in whole numbers
-                'heating_oil': convert_to_co2e(heating_oil, units['heating_oil'], conversion_factors['heating_oil']),  # Display in whole numbers
-                'lpg': convert_to_co2e(lpg, units['lpg'], conversion_factors['lpg']),# Display in kg CO2e
-                'electricity_unit': 'kg CO2e/year',
-                'natural_gas_unit': 'kg CO2e/year',
-                'biomass_unit': 'kg CO2e/year',
-                'coal_unit': 'kg CO2e/year',
-                'heating_oil_unit': 'kg CO2e/year',
-                'lpg_unit': 'kg CO2e/year',
-            })
-        else:
-            messages.error(request, 'Please correct the errors below.')
+            return redirect('data_represent')  # Corrected redirection
     else:
         form = CarbonFootprintForm()
 
     return render(request, 'registration/carbon_footprint_form.html', {'form': form})
+
+def insert_data(request):
+    if request.method == 'POST':
+        label = request.POST['label']
+        value = request.POST['value']
+        DataPoint.objects.create(label=label, value=value)
+        return redirect('visualize_data')
+
+    return render(request, 'insert_data.html')
+
+def visualize_data(request):
+    data = DataPoint.objects.all()
+
+    # Data preparation for Matplotlib
+    labels = [d.label for d in data]
+    values = [d.value for d in data]
+
+    # Plotting the data using Matplotlib
+    plt.figure(figsize=(10, 5))
+    plt.bar(labels, values, color='blue')
+    plt.xlabel('Labels')
+    plt.ylabel('Values')
+    plt.title('Data Visualization')
+
+    # Convert plot to PNG image
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read()).decode('utf-8')  # Ensure decode to string
+    uri = f"data:image/png;base64,{string}"
+
+    return render(request, 'visualize_data.html', {'data': data, 'chart': uri})
+
+def generate_carbon_chart(carbon_data):
+    conversion_factors = {
+        'electricity': {'kWh': 0.249, 'kg': 0},
+        'natural_gas': {'kWh': 0.185, 'kg': 2.75},
+        'biomass': {'kWh': 0.039, 'kg': 0.015},
+        'coal': {'kWh': 0.341, 'kg': 2.42},
+        'heating_oil': {'kWh': 0.265, 'kg': 2.68, 'liters': 2.52},
+        'lpg': {'kWh': 0.214, 'kg': 1.51, 'liters': 1.52},
+    }
+
+    units = carbon_data['units']
+    labels = ['Electricity', 'Natural Gas', 'Biomass', 'Coal', 'Heating Oil', 'LPG']
+    values = [
+        convert_to_co2e(carbon_data['electricity'], units['electricity'], conversion_factors['electricity']),
+        convert_to_co2e(carbon_data['natural_gas'], units['natural_gas'], conversion_factors['natural_gas']),
+        convert_to_co2e(carbon_data['biomass'], units['biomass'], conversion_factors['biomass']),
+        convert_to_co2e(carbon_data['coal'], units['coal'], conversion_factors['coal']),
+        convert_to_co2e(carbon_data['heating_oil'], units['heating_oil'], conversion_factors['heating_oil']),
+        convert_to_co2e(carbon_data['lpg'], units['lpg'], conversion_factors['lpg'])
+    ]
+
+    # Define colors
+    colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6']
+
+    plt.figure(figsize=(10, 10))
+    plt.pie(values, labels=labels, colors=colors, autopct='%1.1f%%', startangle=140)
+    plt.title('Carbon Footprint by Energy Source')
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read()).decode('utf-8')
+    uri = f"data:image/png;base64,{string}"
+    return uri
+
+
+def data_r(request):
+    carbon_data = request.session.get('carbon_data', None)
+    chart_uri = None
+
+    if carbon_data:
+        chart_uri = generate_carbon_chart(carbon_data)
+        # Prepare data for the table
+        data_for_table = {
+            'electricity': carbon_data['electricity'],
+            'natural_gas': carbon_data['natural_gas'],
+            'biomass': carbon_data['biomass'],
+            'coal': carbon_data['coal'],
+            'heating_oil': carbon_data['heating_oil'],
+            'lpg': carbon_data['lpg'],
+            'total_carbon_footprint': calculate_carbon_footprint(
+                carbon_data['electricity'], carbon_data['natural_gas'], carbon_data['biomass'],
+                carbon_data['coal'], carbon_data['heating_oil'], carbon_data['lpg'],
+                carbon_data['units'], {
+                    'electricity': {'kWh': 0.249, 'kg': 0},
+                    'natural_gas': {'kWh': 0.185, 'kg': 2.75},
+                    'biomass': {'kWh': 0.039, 'kg': 0.015},
+                    'coal': {'kWh': 0.341, 'kg': 2.42},
+                    'heating_oil': {'kWh': 0.265, 'kg': 2.68, 'liters': 2.52},
+                    'lpg': {'kWh': 0.214, 'kg': 1.51, 'liters': 1.52},
+                }
+            )
+        }
+
+    return render(request, 'registration/data_represent.html', {'chart': chart_uri, 'data': data_for_table})

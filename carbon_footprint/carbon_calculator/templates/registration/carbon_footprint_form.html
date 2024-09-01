@@ -2,41 +2,13 @@
 
 {% block content %}
 <header class="bg-white text-black-100 fixed w-full top-0 z-50">
-    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div class="flex lg:flex-1">
-            <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Your Company</span>
-                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Company Logo">
-            </a>
-        </div>
-        <div class="flex lg:hidden">
-            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                <span class="sr-only">Open main menu</span>
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-            </button>
-        </div>
-        <div class="hidden lg:flex lg:gap-x-12">
-            <a href="{% url 'index' %}" class="text-sm font-semibold leading-6 text-black">Home</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-black">Features</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-black">About Us</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-black">Contact</a>
-        </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="{% url 'login' %}" class="text-sm font-semibold leading-6 text-black">Log in <span
-                    aria-hidden="true">&rarr;</span></a>
-        </div>
-    </nav>
+    {% include 'navbar.html' %}
 </header>
 
-<div class="pt-24 flex justify-center"> <!-- Centering form container -->
-    <div class="max-w-lg w-full p-6 bg-white rounded-lg shadow-md"> <!-- Form container -->
+<div class="pt-24 flex justify-center">
+    <div class="max-w-lg w-full p-6 bg-white rounded-lg shadow-md">
         <!-- Form -->
-        <form method="post">
+        <form method="post" action="{% url 'carbon_footprint_view' %}">
             {% csrf_token %}
 
             <div class="space-y-6">
@@ -47,7 +19,6 @@
                         <input type="number" name="electricity" id="electricity" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for Electricity -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="electricity_unit" id="electricity_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -64,7 +35,6 @@
                         <input type="number" name="natural_gas" id="natural_gas" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for Natural Gas -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="natural_gas_unit" id="natural_gas_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -81,7 +51,6 @@
                         <input type="number" name="biomass" id="biomass" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for Biomass -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="biomass_unit" id="biomass_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -98,7 +67,6 @@
                         <input type="number" name="coal" id="coal" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for Coal -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="coal_unit" id="coal_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -115,7 +83,6 @@
                         <input type="number" name="heating_oil" id="heating_oil" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for Heating Oil -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="heating_oil_unit" id="heating_oil_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -133,7 +100,6 @@
                         <input type="number" name="lpg" id="lpg" autocomplete="off"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <!-- Dropdown button for LPG -->
                     <div class="relative inline-block text-left ml-4">
                         <select name="lpg_unit" id="lpg_unit"
                             class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -147,8 +113,7 @@
 
             <div class="pt-5">
                 <div class="flex justify-end">
-                    <button type="submit"
-                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Calculate
                     </button>
                 </div>
@@ -156,6 +121,8 @@
         </form>
     </div>
 </div>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
