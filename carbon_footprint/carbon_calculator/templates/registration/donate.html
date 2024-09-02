@@ -1,0 +1,112 @@
+{% extends "index.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Now</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Additional Custom Styles */
+        .hover-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .hover-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+    <header class="bg-white text-black-100 fixed w-full top-0 z-50">
+        {% include 'navbar.html' %}
+    </header>
+    
+
+    <!-- Header -->
+    <header class="w-full bg-blue-900 text-white py-4 mt-20">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold">Support Our Cause</h1>
+            <p class="text-lg mt-2">Your contributions make a difference in the fight against climate change!</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Donate Using PayPal</h2>
+            <div class="text-center">
+                <p class="text-lg mb-4">Support our mission to reduce carbon emissions with a secure PayPal donation. Your contribution helps fund our projects aimed at mitigating climate change.</p>
+                <a href="https://www.paypal.com/donate?hosted_button_id=YOUR_BUTTON_ID" target="_blank" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300">
+                    Donate with PayPal
+                </a>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Other Ways to Donate</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Credit Card Donations -->
+                <div class="hover-card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Credit Card</h3>
+                    <p class="text-gray-700 mb-2">You can also make a donation using your credit or debit card. Your support allows us to invest in sustainable technologies and initiatives.</p>
+                    <p class="text-gray-500">To donate via credit card, please contact us directly and we will guide you through the process.</p>
+                </div>
+
+                <!-- Bank Transfer Donations -->
+                <div class="hover-card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Bank Transfer</h3>
+                    <p class="text-gray-700 mb-2">For larger donations, consider making a bank transfer. This method is secure and allows us to allocate funds effectively to our carbon reduction programs.</p>
+                    <p class="text-gray-500">Contact us for our bank details and further instructions on how to proceed with a bank transfer donation.</p>
+                </div>
+
+                <!-- Check Donations -->
+                <div class="hover-card bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold mb-2">Check</h3>
+                    <p class="text-gray-700 mb-2">You can also send a check made out to our organization. Checks are a traditional and reliable way to support our efforts in combating climate change.</p>
+                    <p class="text-gray-500">Please mail your check to our office address provided below, and include a note specifying the purpose of your donation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-semibold mb-4 text-center">Gift Aid</h2>
+            <div class="text-center">
+                <p class="text-lg mb-4">If you're a UK taxpayer, you can boost your donation by 25p for every £1 you donate through Gift Aid. This extra contribution at no additional cost to you helps us further our mission to address climate change.</p>
+                <a href="mailto:info@yourorganization.org" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition duration-300">
+                    Claim Gift Aid
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-blue-900 text-white py-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Your Organization. All rights reserved.</p>
+        </div>
+    </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const toggleButton = document.getElementById('toggle-button');
+      const dropdownMenu = document.getElementById('dropdown-1');
+      const dropdownIcon = toggleButton.querySelector('svg');
+
+      toggleButton.addEventListener('click', function() {
+        dropdownMenu.classList.toggle('hidden');
+        dropdownIcon.classList.toggle('rotate-180');
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+          dropdownMenu.classList.add('hidden');
+          dropdownIcon.classList.remove('rotate-180');
+        }
+      });
+    });
+</script>
+</body>
+</html>
+{% endblock %}

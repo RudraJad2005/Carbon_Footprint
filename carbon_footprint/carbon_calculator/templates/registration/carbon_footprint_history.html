@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<header class="bg-white text-black-100 fixed w-full top-0 z-50">
+    {% include 'navbar.html' %}
+</header>
+
+<div class="container mx-auto px-4 py-8">
+    <div class="carousel-wrapper relative overflow-hidden">
+        <div class="carousel-inner flex">
+            {% for chart in charts %}
+            <div class="carousel-item min-w-full">
+                <img src="{{ chart.image_url }}" alt="Carbon Footprint Bar Chart" class="w-full max-w-xs mx-auto">
+            </div>
+            {% endfor %}
+        </div>
+        <button class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded" onclick="prevSlide()">‹</button>
+        <button class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded" onclick="nextSlide()">›</button>
+    </div>
+</div>
+
+<script>
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        const slides = document.querySelector('.carousel-inner');
+        const totalSlides = document.querySelectorAll('.carousel-item').length;
+        if (index >= totalSlides) currentIndex = 0;
+        else if (index < 0) currentIndex = totalSlides - 1;
+        else currentIndex = index;
+        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+</script>
+{% endblock %}

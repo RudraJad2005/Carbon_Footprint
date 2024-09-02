@@ -26,3 +26,5 @@ class CarbonFootprintForm(forms.Form):
     coal_unit = forms.ChoiceField(choices=[('kWh', 'kWh'), ('kg', 'kg')], required=False)
     heating_oil_unit = forms.ChoiceField(choices=[('kWh', 'kWh'), ('kg', 'kg'), ('liters', 'liters')], required=False)
     lpg_unit = forms.ChoiceField(choices=[('kWh', 'kWh'), ('kg', 'kg'), ('liters', 'liters')], required=False)
+
+

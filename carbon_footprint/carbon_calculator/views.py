@@ -5,6 +5,10 @@ from .models import DataPoint
 import matplotlib.pyplot as plt
 import io
 import base64
+from .models import CarbonFootprintHistory
+from django.utils import timezone
+from datetime import timedelta
+from datetime import datetime, timedelta
 
 def home(request):
     return render(request, 'index.html') 
@@ -17,6 +21,15 @@ def data_r(request):
 
 def resources(request):
     return render(request, 'registration/resources.html')
+
+def blog(request):
+    return render(request, 'registration/blog.html')
+
+def donate(request):
+    return render(request, 'registration/donate.html')
+
+def contact(request):
+    return render(request, 'registration/contact.html')
 
 def convert_to_co2e(value, unit, conversion_factor):
     """
@@ -56,13 +69,13 @@ def carbon_footprint_view(request):
     if request.method == 'POST':
         form = CarbonFootprintForm(request.POST)
         if form.is_valid():
+            # Get cleaned data
             electricity = form.cleaned_data['electricity'] or 0
             natural_gas = form.cleaned_data['natural_gas'] or 0
             biomass = form.cleaned_data['biomass'] or 0
             coal = form.cleaned_data['coal'] or 0
             heating_oil = form.cleaned_data['heating_oil'] or 0
             lpg = form.cleaned_data['lpg'] or 0
-
             units = {
                 'electricity': form.cleaned_data['electricity_unit'],
                 'natural_gas': form.cleaned_data['natural_gas_unit'],
@@ -71,9 +84,20 @@ def carbon_footprint_view(request):
                 'heating_oil': form.cleaned_data['heating_oil_unit'],
                 'lpg': form.cleaned_data['lpg_unit'],
             }
-
             total_carbon_footprint = calculate_carbon_footprint(
                 electricity, natural_gas, biomass, coal, heating_oil, lpg, units, conversion_factors
+            )
+
+
+            CarbonFootprintHistory.objects.create(
+                user=request.user.username,
+                electricity=electricity,
+                natural_gas=natural_gas,
+                biomass=biomass,
+                coal=coal,
+                heating_oil=heating_oil,
+                lpg=lpg,
+                total_co2e=total_carbon_footprint,
             )
 
             # Store the data in session
@@ -190,3 +214,47 @@ def data_r(request):
         }
 
     return render(request, 'registration/data_represent.html', {'chart': chart_uri, 'data': data_for_table})
+
+
+# Heastory views 
+
+def carbon_footprint_history_view(request):
+    # Filter history to include only records from the last 7 days
+    seven_days_ago = datetime.now() - timedelta(days=7)
+    history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__gte=seven_days_ago)
+
+    # Prepare data for the bar charts
+    charts = []
+    for record in history:
+        # Aggregate data
+        data = {
+            'Electricity': record.electricity,
+            'Natural Gas': record.natural_gas,
+            'Biomass': record.biomass,
+            'Coal': record.coal,
+            'Heating Oil': record.heating_oil,
+            'LPG': record.lpg,
+        }
+        labels = list(data.keys())
+        values = list(data.values())
+
+        # Plotting the bar chart
+        plt.figure(figsize=(8, 6))
+        plt.bar(labels, values, color='skyblue')
+        plt.xlabel('Emission Type')
+        plt.ylabel('CO2 Emission (kg)')
+        plt.title(f'Carbon Footprint - {record.created_at.strftime("%Y-%m-%d")}')
+        plt.xticks(rotation=45)
+
+        # Convert plot to image
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        chart_url = base64.b64encode(buf.read()).decode('utf-8')
+        charts.append({
+            'image_url': f"data:image/png;base64,{chart_url}",
+            'date': record.created_at
+        })
+        plt.close()
+
+    return render(request, 'registration/carbon_footprint_history.html', {'charts': charts})
