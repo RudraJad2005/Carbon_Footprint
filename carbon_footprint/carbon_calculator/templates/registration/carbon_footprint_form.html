@@ -157,20 +157,32 @@
 
             <div class="pt-5">
                 <div class="flex justify-end">
-                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit"
+                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Calculate
                     </button>
                 </div>
             </div>
         </form>
 
-        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 dark:from-cyan-400 dark:to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:hover:from-cyan-500 dark:hover:to-blue-600 focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-            <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                Tooltip Button
-            </span>
+        <button type="submit"
+            class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Offset
         </button>
     </div>
 </div>
+
+
+
+<!-- Add this to your HTML file -->
+<div id="popup-message"
+    class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white p-4 rounded-lg shadow-lg z-50 hidden">
+    <p>This is a pop-up message. It will appear every time you visit the website.</p>
+    <button id="close-popup" class="absolute top-2 right-2 bg-gray-900 text-white p-1 rounded-full hover:bg-gray-700">
+        &times;
+    </button>
+</div>
+
 
 <style>
     .group:hover .tooltip {
@@ -183,6 +195,17 @@
         right: 0;
         transform: translateY(0.5rem);
         z-index: 10;
+    }
+
+    /* Add this to your CSS file */
+    #popup-message {
+        display: none;
+        /* hide the popup by default */
+    }
+
+    #popup-message.show {
+        display: block;
+        /* show the popup when the show class is added */
     }
 </style>
 <script>
@@ -223,6 +246,27 @@
                 }
             });
         });
+    });
+
+
+    // check if the user has visited the website before
+    if (!localStorage.getItem("visited")) {
+        // show the popup when the page loads
+        document.getElementById("popup-message").classList.add("show");
+        // set a flag to indicate that the user has visited the website
+        localStorage.setItem("visited", true);
+    } else {
+        // if the user has visited the website before, only show the popup on page reload
+        window.addEventListener("load", function () {
+            // show the popup when the page loads
+            document.getElementById("popup-message").classList.add("show");
+        });
+    }
+
+    // add an event listener to the close button
+    document.getElementById("close-popup").addEventListener("click", function () {
+        // remove the show class to hide the popup
+        document.getElementById("popup-message").classList.remove("show");
     });
 </script>
 

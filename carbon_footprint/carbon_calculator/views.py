@@ -225,6 +225,24 @@ def carbon_footprint_history_view(request):
 
     # Prepare data for the bar charts
     charts = []
+    total_current_week = {
+        'Electricity': 0,
+        'Natural Gas': 0,
+        'Biomass': 0,
+        'Coal': 0,
+        'Heating Oil': 0,
+        'LPG': 0
+    }
+    
+    colors = {
+        'Electricity': 'skyblue',
+        'Natural Gas': 'lightgreen',
+        'Biomass': 'lightcoral',
+        'Coal': 'gold',
+        'Heating Oil': 'lightpink',
+        'LPG': 'lightgray'
+    }
+    
     for record in history:
         # Aggregate data
         data = {
@@ -237,10 +255,15 @@ def carbon_footprint_history_view(request):
         }
         labels = list(data.keys())
         values = list(data.values())
+        bar_colors = [colors[label] for label in labels]
 
+        # Update total for the current week
+        for key in total_current_week.keys():
+            total_current_week[key] += data.get(key, 0)
+        
         # Plotting the bar chart
-        plt.figure(figsize=(8, 6))
-        plt.bar(labels, values, color='skyblue')
+        plt.figure(figsize=(12, 8))  # Increase the figure size
+        plt.bar(labels, values, color=bar_colors)
         plt.xlabel('Emission Type')
         plt.ylabel('CO2 Emission (kg)')
         plt.title(f'Carbon Footprint - {record.created_at.strftime("%Y-%m-%d")}')
@@ -248,7 +271,7 @@ def carbon_footprint_history_view(request):
 
         # Convert plot to image
         buf = io.BytesIO()
-        plt.savefig(buf, format='png')
+        plt.savefig(buf, format='png', bbox_inches='tight')  # Use bbox_inches='tight' to avoid clipping
         buf.seek(0)
         chart_url = base64.b64encode(buf.read()).decode('utf-8')
         charts.append({
@@ -257,4 +280,41 @@ def carbon_footprint_history_view(request):
         })
         plt.close()
 
-    return render(request, 'registration/carbon_footprint_history.html', {'charts': charts})
+    # Get previous period data (for example, the week before the last 7 days)
+    previous_week_start = seven_days_ago - timedelta(days=7)
+    previous_week_end = seven_days_ago
+    previous_history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__range=(previous_week_start, previous_week_end))
+
+    total_previous_week = {
+        'Electricity': 0,
+        'Natural Gas': 0,
+        'Biomass': 0,
+        'Coal': 0,
+        'Heating Oil': 0,
+        'LPG': 0
+    }
+    
+    for record in previous_history:
+        data = {
+            'Electricity': record.electricity,
+            'Natural Gas': record.natural_gas,
+            'Biomass': record.biomass,
+            'Coal': record.coal,
+            'Heating Oil': record.heating_oil,
+            'LPG': record.lpg,
+        }
+
+        for key in total_previous_week.keys():
+            total_previous_week[key] += data.get(key, 0)
+    
+    # Calculate reduction or increase
+    reduction_or_increase = {
+        key: total_current_week[key] - total_previous_week.get(key, 0)
+        for key in total_current_week
+    }
+    
+    return render(request, 'registration/carbon_footprint_history.html', {
+        'charts': charts,
+        'total_current_week': total_current_week,
+        'reduction_or_increase': reduction_or_increase
+    })

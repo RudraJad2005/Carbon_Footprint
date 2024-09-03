@@ -1,23 +1,110 @@
 {% extends "index.html" %}
 
 {% block content %}
+<style>
+    /* Add this to your CSS file */
+#popup-message {
+    display: none; /* hide the popup by default */
+}
 
-<header class="bg-white text-black-100 fixed w-full top-0 z-50">
-    {% include 'navbar.html' %}
-</header>
+#popup-message.show {
+    display: block; /* show the popup when the show class is added */
+}
+</style>
 
-<div class="container mx-auto px-4 py-8">
-    <div class="carousel-wrapper relative overflow-hidden">
-        <div class="carousel-inner flex">
-            {% for chart in charts %}
-            <div class="carousel-item min-w-full">
-                <img src="{{ chart.image_url }}" alt="Carbon Footprint Bar Chart" class="w-full max-w-xs mx-auto">
+<!-- Admin Panel Layout -->
+<div class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Sidebar -->
+
+    <header class="bg-white text-black-100 fixed w-full top-0 z-50">
+        {% include 'navbar.html' %}
+    </header>
+    <!-- Main Content -->
+    <div class="flex-1 p-6">
+
+        <!-- Carousel Section -->
+        <div class="container mx-auto px-4 py-16">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-white mb-6">Your Weekly Carbon Footprint</h2>
+                <div class="carousel-wrapper relative overflow-hidden bg-gray-700 p-4 rounded-lg">
+                    <div class="carousel-inner flex transition-transform duration-500 ease-in-out">
+                        {% for chart in charts %}
+                        <div class="carousel-item min-w-full">
+                            <img src="{{ chart.image_url }}" alt="Carbon Footprint Bar Chart" class="w-full max-w-3xl mx-auto rounded-lg shadow-lg">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-900 text-white p-3 rounded-full shadow-lg" onclick="prevSlide()">‹</button>
+                    <button class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-900 text-white p-3 rounded-full shadow-lg" onclick="nextSlide()">›</button>
+                </div>
+                
             </div>
-            {% endfor %}
         </div>
-        <button class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded" onclick="prevSlide()">‹</button>
-        <button class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded" onclick="nextSlide()">›</button>
+
+        <!-- Weekly Reduction Data Section -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4">Weekly Carbon Footprint Reduction</h2>
+                <h3 class="text-lg font-medium mb-4">Total Footprint Data</h3>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b px-4 py-2">Emission Type</th>
+                            <th class="border-b px-4 py-2">This Week</th>
+                            <th class="border-b px-4 py-2">Last Week</th>
+                            <th class="border-b px-4 py-2">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in total_current_week.items %}
+                        <tr>
+                            <td class="border-b px-4 py-2">{{ key }}</td>
+                            <td class="border-b px-4 py-2">
+                                {{ value }} kg
+                                {% if key in reduction_or_increase %}
+                                    {% if reduction_or_increase.key > 0 %}
+                                        <span class="text-red-500 ml-2">▲ {{ reduction_or_increase.key }} kg</span>
+                                    {% elif reduction_or_increase.key < 0 %}
+                                        <span class="text-green-500 ml-2">▼ {{ reduction_or_increase.key }} kg</span>
+                                    {% else %}
+                                        <span class="text-gray-500 ml-2">—</span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td class="border-b px-4 py-2">
+                                {% if key in total_previous_week %}
+                                    {{ total_previous_week.key }} kg
+                                {% else %}
+                                    0 kg
+                                {% endif %}
+                            </td>
+                            <td class="border-b px-4 py-2
+                                {% if key in reduction_or_increase and reduction_or_increase.key > 0 %}
+                                    text-red-500
+                                {% else %}
+                                    text-green-500
+                                {% endif %}">
+                                {% if key in reduction_or_increase %}
+                                    {{ reduction_or_increase.key }} kg
+                                {% else %}
+                                    0 kg
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Add this to your HTML file -->
+<div id="popup-message" class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white p-4 rounded-lg shadow-lg z-50 hidden">
+    <p>This is a pop-up message. It will appear every time you reload the page.</p>
+    <button id="close-popup" class="absolute top-2 right-2 bg-gray-900 text-white p-1 rounded-full hover:bg-gray-700">
+        &times;
+    </button>
 </div>
 
 <script>
@@ -39,5 +126,19 @@
     function prevSlide() {
         showSlide(currentIndex - 1);
     }
+
+    // Add this to your JavaScript file
+window.addEventListener("load", function() {
+    // show the popup when the page loads
+    document.getElementById("popup-message").classList.add("show");
+});
+
+// add an event listener to the close button
+document.getElementById("close-popup").addEventListener("click", function() {
+    // remove the show class to hide the popup
+    document.getElementById("popup-message").classList.remove("show");
+});
+    
 </script>
+
 {% endblock %}
