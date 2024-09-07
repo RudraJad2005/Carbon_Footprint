@@ -17,8 +17,10 @@ Result Display: Shows the total carbon footprint and individual contributions fr
  
 Install required packages like django and metplotlib. run this cmd to install package 
 
+**Activate the env and then install this below packages**
 ```pip install django metplotlib```
 
+**Then go to project directory**
 2.```cd carbon_footprint```
 
 **Make sure your have required packages**
