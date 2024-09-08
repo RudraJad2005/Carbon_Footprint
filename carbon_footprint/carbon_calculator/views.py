@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CarbonFootprintForm
+from .forms import CarbonFootprintForm, UserRegistrationForm, AirQualityForm
 from .models import DataPoint
 import matplotlib.pyplot as plt
 import io
 import base64
 from .models import CarbonFootprintHistory
 from django.utils import timezone
+from django.contrib.auth import login as auth_login, authenticate
 from datetime import timedelta
 from datetime import datetime, timedelta
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .utils import load_air_quality_data
+import os 
+from django.conf import settings
+from django.http import HttpResponse
 
 def home(request):
     return render(request, 'index.html') 
@@ -30,6 +36,18 @@ def donate(request):
 
 def contact(request):
     return render(request, 'registration/contact.html')
+
+def login(request):
+    return render(request, 'registration/login.html')
+
+def sign_up(request):
+    return render(request, 'registration/sign_up.html')
+
+def carbon_footprint(request):
+    return render(request, 'registration/carbon_form.html')
+
+def carbon_result(request):
+    return render(request, 'registration/carbon_result.html')
 
 def convert_to_co2e(value, unit, conversion_factor):
     """
@@ -318,3 +336,69 @@ def carbon_footprint_history_view(request):
         'total_current_week': total_current_week,
         'reduction_or_increase': reduction_or_increase
     })
+
+# User Login/Signup section
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            user = form.save()
+            auth_login(request, user) 
+            messages.success(request, 'Registration successful! You are now logged in.')
+            return redirect('carbon_footprint_view')  # Replace 'twitter' with the name of the URL you want to redirect to
+        else:
+            print("Form is not valid")
+            print(form.errors)
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = UserRegistrationForm()
+    
+    return render(request, 'registration/register.html', {'form': form})
+
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, 'Registration successful! You are now logged in.')  # Redirect to home or another page after login
+            return redirect('index')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+
+def air_quality_view(request):
+    form = AirQualityForm()
+    data = None
+
+    if request.method == 'POST':
+        form = AirQualityForm(request.POST)
+        if form.is_valid():
+            city = form.cleaned_data['city']  # Ensure your form has 'city' field
+            date = form.cleaned_data.get('date')  # Use get() for optional fields
+            
+            # Construct the file path to the CSV file
+            file_path = os.path.join(settings.BASE_DIR, 'carbon_calculator', 'data', 'cleaned_air_quality_data.csv')
+            
+            # Load and filter data
+            try:
+                df = load_air_quality_data(file_path)
+                all_data = df.to_dict(orient='records')  # Convert DataFrame to list of dictionaries
+            except FileNotFoundError:
+                return HttpResponse("Data file not found.", status=500)
+            
+            # Check the first entry for debugging
+            if all_data:
+                print("First entry in the data:", all_data[0])
+            
+            # Filter data using the correct column name
+            data = [entry for entry in all_data if entry.get('city') == city]
+            if date:
+                data = [entry for entry in data if entry.get('date') == str(date)]
+
+    return render(request, 'registration/air_quality_form.html', {'form': form, 'data': data})

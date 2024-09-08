@@ -1,0 +1,206 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lower Carbon Living</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .header {
+            background: url('https://source.unsplash.com/random/1600x900?nature') no-repeat center center/cover;
+            color: black;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .toc {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 1rem;
+        }
+
+        .toc h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .toc a {
+            display: block;
+            padding: 0.5rem 0;
+            color: #2b6cb0;
+            text-decoration: none;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .toc a:hover {
+            color: #1a202c;
+        }
+
+        footer {
+            background: #2d3748;
+            color: #ffffff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+        {% include 'navbar.html' %}
+        <!-- Page Header -->
+        <header class="header">
+            <h1>Lower Carbon Living</h1>
+            <p class="text-lg">Explore practical tips and insights for reducing your carbon footprint.</p>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="container mx-auto flex flex-wrap mt-10">
+            <!-- Main Sections -->
+            <div class="w-full md:w-3/4 pr-4">
+                <!-- In the Air -->
+                <section id="in-the-air" class="section bg-white mb-12">
+                    <div class="section-header">
+                        In the Air
+                    </div>
+                <p>
+                    Reducing air pollution and greenhouse gas emissions from the air is crucial for combating climate change. Air pollution often results from industrial activities, vehicle emissions, and the burning of fossil fuels. Transitioning to cleaner energy sources, such as wind and solar power, is essential for reducing emissions. Additionally, promoting energy-efficient technologies and encouraging public transportation and carpooling can significantly reduce the carbon footprint associated with air travel and commuting.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Invest in and support renewable energy projects, adopt energy-efficient practices, and advocate for policies that reduce air pollution. Regular maintenance of vehicles and machinery can also minimize their environmental impact.
+                </p>
+            </section>
+            
+            <!-- On the Ground -->
+            <section id="on-the-ground" class="section bg-white mb-12">
+                <div class="section-header">
+                    On the Ground
+                </div>
+                <p>
+                    Sustainable practices on the ground involve a variety of measures aimed at reducing the carbon footprint of everyday activities. This includes implementing energy-efficient practices in homes and businesses, reducing water consumption, and choosing eco-friendly materials for construction and renovation projects. Additionally, promoting the use of public transportation, cycling, and walking instead of driving can further contribute to lower carbon emissions.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Use energy-efficient appliances and light bulbs, insulate your home to reduce heating and cooling needs, and opt for sustainable building materials. Reducing water usage through low-flow fixtures and repairing leaks also plays a significant role in reducing your environmental impact.
+                </p>
+            </section>
+            
+            <!-- At Home -->
+            <section id="at-home" class="section bg-white mb-12">
+                <div class="section-header">
+                    At Home
+                </div>
+                <p>
+                    Making your home more sustainable involves a range of actions that contribute to energy and resource conservation. This includes upgrading to energy-efficient appliances, implementing water-saving measures, and reducing household waste through recycling and composting. Additionally, using smart home technologies can help monitor and manage energy usage more effectively.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Replace old appliances with energy-efficient models, install programmable thermostats to manage heating and cooling, and practice recycling and composting. Simple changes like using reusable bags and containers can also help reduce household waste.
+                </p>
+            </section>
+
+            <!-- Food -->
+            <section id="food" class="section bg-white mb-12">
+                <div class="section-header">
+                    Food
+                </div>
+                <p>
+                    The production and consumption of food have a significant impact on the environment. To reduce your carbon footprint associated with food, focus on consuming locally-sourced and seasonal produce, reducing meat and dairy consumption, and minimizing food waste. Supporting sustainable farming practices and choosing organic products can also contribute to a lower carbon footprint.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Opt for plant-based meals, purchase food from local farmers and markets, and reduce portion sizes to prevent food waste. Composting food scraps and using sustainable packaging are additional ways to minimize environmental impact.
+                </p>
+            </section>
+            
+            <!-- Waste & Recycling -->
+            <section id="waste-recycling" class="section bg-white mb-12">
+                <div class="section-header">
+                    Waste & Recycling
+                </div>
+                <p>
+                    Effective waste management and recycling practices are crucial for reducing the environmental impact of waste. This involves separating recyclable materials from general waste, minimizing single-use plastics, and supporting recycling programs. Proper waste disposal helps prevent greenhouse gas emissions from landfills and promotes the efficient use of resources.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Sort and recycle materials properly, reduce the use of disposable plastics, and participate in local recycling initiatives. Composting organic waste can also help reduce landfill contributions and create valuable soil nutrients.
+                </p>
+            </section>
+
+            <!-- Government & Services -->
+            <section id="government-services" class="section bg-white mb-12">
+                <div class="section-header">
+                    Government & Services
+                </div>
+                <p>
+                    Governments and public services play a key role in shaping policies and initiatives that impact carbon emissions. Supporting and advocating for policies that promote renewable energy, energy efficiency, and sustainable transportation can drive systemic changes that reduce overall carbon footprints. Public services such as waste management and public transportation also contribute to environmental sustainability.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Engage with local government programs focused on sustainability, support policies aimed at reducing emissions, and utilize public services that contribute to environmental conservation. Voting for leaders and policies that prioritize environmental issues can also make a significant impact.
+                </p>
+            </section>
+
+            <!-- Everything Else -->
+            <section id="everything-else" class="section bg-white mb-12">
+                <div class="section-header">
+                    Everything Else
+                </div>
+                <p>
+                    Beyond the specific categories mentioned, many other aspects of life contribute to your overall carbon footprint. Being mindful of your lifestyle choices, consumer habits, and the impact of your activities on the environment can help reduce your carbon footprint. Continuously seeking ways to improve and adopt more sustainable practices is key to achieving a lower overall environmental impact.
+                </p>
+                <p>
+                    <strong>Key Actions:</strong> Evaluate your lifestyle and consumption patterns regularly, seek out eco-friendly products and services, and stay informed about new sustainability practices. Small, consistent changes in various areas of your life can collectively lead to a significant reduction in your carbon footprint.
+                </p>
+            </section>
+        </div>
+        
+        <!-- Table of Contents -->
+        <div class="w-full md:w-1/4 pl-4 toc">
+            <nav class="sticky top-16">
+                <h3 class="text-xl font-semibold mb-4">Table of Contents</h3>
+                <a href="#in-the-air">In the Air</a>
+                <a href="#on-the-ground">On the Ground</a>
+                <a href="#at-home">At Home</a>
+                <a href="#food">Food</a>
+                <a href="#waste-recycling">Waste & Recycling</a>
+                <a href="#government-services">Government & Services</a>
+                <a href="#everything-else">Everything Else</a>
+            </nav>
+        </div>
+    </div>
+    
+  
+
+</body>
+</html>
+
+{% endblock %}

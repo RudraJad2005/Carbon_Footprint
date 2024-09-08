@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Quality Form</title>
+</head>
+<body>
+    <h1>Air Quality Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if data %}
+        <h2>Air Quality Data</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Pollutant</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                    <tr>
+                        <td>{{ entry.location }}</td>
+                        <td>{{ entry.date }}</td>
+                        <td>{{ entry.pollutant }}</td>
+                        <td>{{ entry.value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

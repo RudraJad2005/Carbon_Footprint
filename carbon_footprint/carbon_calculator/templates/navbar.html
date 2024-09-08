@@ -1,6 +1,6 @@
 
 
-<header class="bg-white">
+<header class="bg-white hover:bg-white transform transition-transform ">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div class="flex lg:flex-1">
         <a href="#" class="-m-1.5 p-1.5">
@@ -17,7 +17,7 @@
           </svg>
         </button>
       </div>
-      <div class="hidden lg:flex lg:gap-x-12">
+      <div class="hidden lg:flex lg:gap-x-12 relative z-50">
         <div class="relative">
           <button id="toggle-button" data-toggle="dropdown-1" class="flex items-center space-x-2">
             <span>Product</span>
@@ -26,7 +26,7 @@
             </svg>
           </button>
           <div id="dropdown-1"
-            class="hidden absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+            class="hidden absolute -left-8 top-full z-50 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
             <div class="p-4">
               <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
                 <div
@@ -76,7 +76,7 @@
                     Security
                     <span class="absolute inset-0"></span>
                   </a>
-                  <p class="mt-1 text-gray-600">Your customers’ data will be safe and secure</p>
+                  <p class="mt-1 text-gray-600">Your customers' data will be safe and secure</p>
                 </div>
               </div>
               <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
@@ -141,12 +141,12 @@
 
         <a href="{% url 'blog' %}" class="text-sm font-semibold leading-6 text-gray-900">Blog</a>
 
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
+        <a href="{% url 'about' %}" class="text-sm font-semibold leading-6 text-gray-900">About us</a>
 
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span
+        <a href="{% url 'login' %}" class="text-sm font-semibold leading-6 text-gray-900">Log in <span
             aria-hidden="true">&rarr;</span></a>
       </div>
     </nav>

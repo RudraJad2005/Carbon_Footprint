@@ -12,197 +12,271 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-         const observerOptions = {
-             root: null,
-             rootMargin: '0px',
-             threshold: 0.1
-         };
-     
-         const observer = new IntersectionObserver((entries, observer) => {
-             entries.forEach(entry => {
-                 if (entry.isIntersecting) {
-                     entry.target.classList.add('show');
-                     observer.unobserve(entry.target); // Optional: Remove observer after animation
-                 }
-             });
-         }, observerOptions);
-     
-         const fadeElements = document.querySelectorAll('.fade-on-scroll');
-         fadeElements.forEach(el => observer.observe(el));
-     
-         // Add scroll effects for other elements
-         const scrollElements = document.querySelectorAll('.scroll-effect');
-         const handleScroll = () => {
-             scrollElements.forEach(el => {
-                 const scrollPosition = window.scrollY;
-                 const elementPosition = el.offsetTop;
-                 const elementHeight = el.offsetHeight;
-     
-                 if (scrollPosition >= elementPosition - window.innerHeight && scrollPosition <= elementPosition + elementHeight) {
-                     el.classList.add('scroll-effect-active');
-                 } else {
-                     el.classList.remove('scroll-effect-active');
-                 }
-             });
-         };
-     
-         window.addEventListener('scroll', handleScroll);
-     });
-     </script>
-     <style>
-         .custom-card,
-         .custom-card-2,
-         .custom-card-3 {
-             background-color: white;
-             color: black;
-             transition: all 0.3s ease;
-         }
-     
-         .custom-card:hover,
-         .custom-card-2:hover,
-         .custom-card-3:hover,
-         .hover-effect:hover {
-             transform: scale(1.05);
-             background-color: #0091E1;
-             color: white;
-             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-         }
-     
-         .hover-effect {
-             background-color: white;
-         }
-     
-         .gradient-text {
-             background: linear-gradient(to right, #0091E1, #FFD3F4);
-             -webkit-background-clip: text;
-             background-clip: text;
-             -webkit-text-fill-color: transparent;
-             color: transparent;
-         }
-     
-         .gradient-text-2 {
-             background: linear-gradient(to right, #ff7e5f, #feb47b);
-             -webkit-background-clip: text;
-             background-clip: text;
-             -webkit-text-fill-color: transparent;
-             color: transparent;
-         }
-     
-         .bullet-list {
-             list-style-type: disc; /* Use disc for bullets */
-             padding-left: 20px; /* Space for bullets */
-             margin-top: 0; /* Remove default margin */
-             margin-bottom: 20px; /* Space between list items */
-         }
-         .bullet-list li {
-             margin-bottom: 10px; /* Space between items */
-             font-size: 1.25rem; /* Font size for better readability */
-         }
-     
-         .fadeIn {
-             opacity: 1;
-             transform: translateY(0);
-             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-         }
-         .fade-on-scroll {
-             opacity: 0;
-             transform: translateY(20px);
-             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-         }
-     
-     
-     
-     .fade-on-scroll.show {
-         opacity: 1;
-         transform: translateY(0);
-     }
-     
-     .scroll-effect {
-         opacity: 0;
-         transform: translateY(50px);
-         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-     }
-     
-     .scroll-effect-active {
-         opacity: 1;
-         transform: translateY(0);
-     }
-     </style>
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target); // Optional: Remove observer after animation
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-on-scroll');
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Add scroll effects for other elements
+            const scrollElements = document.querySelectorAll('.scroll-effect');
+            const handleScroll = () => {
+                scrollElements.forEach(el => {
+                    const scrollPosition = window.scrollY;
+                    const elementPosition = el.offsetTop;
+                    const elementHeight = el.offsetHeight;
+
+                    if (scrollPosition >= elementPosition - window.innerHeight && scrollPosition <= elementPosition + elementHeight) {
+                        el.classList.add('scroll-effect-active');
+                    } else {
+                        el.classList.remove('scroll-effect-active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', handleScroll);
+        });
+    </script>
+    <style>
+        .custom-card,
+        .custom-card-2,
+        .custom-card-3 {
+            background-color: white;
+            color: black;
+            transition: all 0.3s ease;
+        }
+
+        .custom-card:hover,
+        .custom-card-2:hover,
+        .custom-card-3:hover,
+        .hover-effect:hover {
+            transform: scale(1.05);
+            background-color: #0091E1;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .hover-effect {
+            background-color: white;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #0091E1, #FFD3F4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .gradient-text-2 {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .bullet-list {
+            list-style-type: disc;
+            /* Use disc for bullets */
+            padding-left: 20px;
+            /* Space for bullets */
+            margin-top: 0;
+            /* Remove default margin */
+            margin-bottom: 20px;
+            /* Space between list items */
+        }
+
+        .bullet-list li {
+            margin-bottom: 10px;
+            /* Space between items */
+            font-size: 1.25rem;
+            /* Font size for better readability */
+        }
+
+        .fadeIn {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+
+
+        .fade-on-scroll.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-effect {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .scroll-effect-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+    </style>
 </head>
 
 <body class="bg-gray-100 flex flex-col h-screen">
     <header class="bg-white text-black-100 fixed w-full top-0 z-50">
-     
+
         {% include 'navbar.html' %}
-       
+
     </header>
 
-    <main class="flex-1 container mx-auto p-6">
-        <!-- Chart Display -->
-        <div class="card bg-white p-6 rounded-lg mb-8 max-w-4xl mx-auto">
-            <h3 class="text-2xl font-semibold mb-4">Carbon Footprint Visualization</h3>
-            <img src="{{ chart }}" alt="Carbon Footprint Chart" class="w-full max-w-4xl mx-auto rounded-lg shadow-lg">
-        </div>
+    <div class="relative z-10 card bg-white p-6 rounded-lg mb-8 max-w-4xl mx-auto">
+        <h3 class="text-2xl font-semibold mb-4">Carbon Footprint Visualization</h3>
+        <img src="{{ chart }}" alt="Carbon Footprint Chart" class="w-full max-w-4xl mx-auto rounded-lg shadow-lg">
+      </div>
 
-        <!-- Table Display -->
-        <div class="card bg-white p-8 rounded-lg max-w-4xl mx-auto">
-            <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Carbon Footprint Details</h1>
-            <p class="text-xl text-gray-600 mb-4">Total carbon footprint: <span class="font-semibold text-green-700">{{ data.total_carbon_footprint }}</span> kg CO2e/year</p>
-            
-            <div class="relative overflow-x-auto mt-8">
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase table-header">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 rounded-s-lg">Description</th>
-                            <th scope="col" class="px-6 py-3">Emissions</th>
-                            <th scope="col" class="px-6 py-3 rounded-e-lg">Unit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">Electricity</th>
-                            <td class="px-6 py-4">{{ data.electricity }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">Natural Gas</th>
-                            <td class="px-6 py-4">{{ data.natural_gas }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">Biomass</th>
-                            <td class="px-6 py-4">{{ data.biomass }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">Coal</th>
-                            <td class="px-6 py-4">{{ data.coal }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">Heating Oil</th>
-                            <td class="px-6 py-4">{{ data.heating_oil }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">LPG</th>
-                            <td class="px-6 py-4">{{ data.lpg }}</td>
-                            <td class="px-6 py-4">kg CO2e/year</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="font-semibold text-gray-900 table-footer">
-                            <th scope="row" class="px-6 py-3 text-base">Total</th>
-                            <td class="px-6 py-3">{{ data.total_carbon_footprint }}</td>
-                            <td class="px-6 py-3">kg CO2e/year</td>
-                        </tr>
-                    </tfoot>
-                </table>
+    <main class="flex-1 container mx-auto p-6 mt-60">
+        <!-- Carousel Wrapper -->
+        <div class="relative w-full h-[700px] perspective flex justify-center items-center">
+            <div id="carousel" class="carousel-container relative w-full h-full mx-auto">
+                <!-- Table 1 -->
+                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500 overflow-hidden">
+                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Carbon Footprint Details</h1>
+                    <p class="text-sm text-gray-600 mb-4">Total carbon footprint: <span class="font-semibold text-green-700">{{ data.total_carbon_footprint }}</span> kg CO2e/year</p>
+                    
+                    <div class="relative overflow-x-auto overflow-y-auto max-h-[250px]">
+                        <table class="w-full text-xs text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase table-header">
+                                <tr>
+                                    <th scope="col" class="px-3 py-2">Description</th>
+                                    <th scope="col" class="px-3 py-2">Emissions</th>
+                                    <th scope="col" class="px-3 py-2">Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Electricity</th>
+                                    <td class="px-3 py-2">{{ data.electricity }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Natural Gas</th>
+                                    <td class="px-3 py-2">{{ data.natural_gas }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Biomass</th>
+                                    <td class="px-3 py-2">{{ data.biomass }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Coal</th>
+                                    <td class="px-3 py-2">{{ data.coal }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Heating Oil</th>
+                                    <td class="px-3 py-2">{{ data.heating_oil }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">LPG</th>
+                                    <td class="px-3 py-2">{{ data.lpg }}</td>
+                                    <td class="px-3 py-2">kg CO2e/year</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="font-semibold text-gray-900 table-footer">
+                                    <th scope="row" class="px-3 py-3 text-xs">Total</th>
+                                    <td class="px-3 py-3">{{ data.total_carbon_footprint }}</td>
+                                    <td class="px-3 py-3">kg CO2e/year</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Other tables follow similarly -->
+                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
+                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
+                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
+                </div>
+                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
+                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
+                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
+                </div>
+                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
+                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
+                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
+                </div>
+                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
+                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
+                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
+                </div>
+                <!-- Add remaining tables (3, 4, 5) similarly -->
             </div>
         </div>
     </main>
-
+    
+    <script>
+        let currentAngle = 0;
+        const tables = document.querySelectorAll('.table-card');
+        const totalTables = tables.length;
+        
+        // Update carousel position
+        const updateCarousel = () => {
+            tables.forEach((table, index) => {
+                const angle = (index * (360 / totalTables)) + currentAngle;
+                table.style.transform = `rotateY(${angle}deg) translateZ(400px)`;
+            });
+        };
+    
+        // Add click event to rotate the carousel
+        document.querySelector('.carousel-container').addEventListener('click', () => {
+            currentAngle -= 72;  // Adjust angle for each click
+            updateCarousel();
+        });
+    
+        updateCarousel();  // Initialize carousel positions
+    </script>
+    
+    <!-- Tailwind CSS Styles -->
+    <style>
+        .perspective {
+            perspective: 1000px;
+        }
+        .carousel-container {
+            transform-style: preserve-3d;
+            transition: transform 1s;
+            display: flex;
+            justify-content: center;
+        }
+        .table-card {
+            backface-visibility: hidden;
+        }
+    </style>
+    
+    
+      
+   
 </body>
 
 </html>

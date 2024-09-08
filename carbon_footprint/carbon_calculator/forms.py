@@ -2,15 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-class CustomUserCreationForm(UserCreationForm):
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
-class CustomAuthenticationForm(AuthenticationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+        fields = ('username', 'email', 'password1', 'password2')
 
 class CarbonFootprintForm(forms.Form):
     electricity = forms.FloatField(label='Electricity (kWh or kg)', required=False)
@@ -28,3 +25,7 @@ class CarbonFootprintForm(forms.Form):
     lpg_unit = forms.ChoiceField(choices=[('kWh', 'kWh'), ('kg', 'kg'), ('liters', 'liters')], required=False)
 
 
+
+class AirQualityForm(forms.Form):
+    city = forms.CharField(max_length=100)
+    date = forms.DateField(required=False)
