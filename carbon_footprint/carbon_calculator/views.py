@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CarbonFootprintForm, UserRegistrationForm, AirQualityForm
+from .forms import CarbonFootprintForm, UserRegistrationForm, AirPollutionForm
 from .models import DataPoint
 import matplotlib.pyplot as plt
 import io
@@ -10,11 +10,17 @@ from django.utils import timezone
 from django.contrib.auth import login as auth_login, authenticate
 from datetime import timedelta
 from datetime import datetime, timedelta
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .utils import load_air_quality_data
-import os 
+from django.contrib.auth.forms import AuthenticationForm 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+import requests
+from django.shortcuts import render
+import json
+from django.core.files.storage import default_storage
+import os
+
+naive_datetime = datetime.now()  # Example naive datetime
+aware_datetime = timezone.make_aware(naive_datetime) 
 
 def home(request):
     return render(request, 'index.html') 
@@ -39,6 +45,9 @@ def contact(request):
 
 def login(request):
     return render(request, 'registration/login.html')
+
+def template(request):
+    return render(request, 'registration/template.html')
 
 def sign_up(request):
     return render(request, 'registration/sign_up.html')
@@ -237,105 +246,57 @@ def data_r(request):
 # Heastory views 
 
 def carbon_footprint_history_view(request):
-    # Filter history to include only records from the last 7 days
-    seven_days_ago = datetime.now() - timedelta(days=7)
-    history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__gte=seven_days_ago)
+    # Define the path to the JSON file
+    json_file_path = os.path.join(settings.BASE_DIR, 'carbon_footprint_history.json')
 
-    # Prepare data for the bar charts
-    charts = []
-    total_current_week = {
-        'Electricity': 0,
-        'Natural Gas': 0,
-        'Biomass': 0,
-        'Coal': 0,
-        'Heating Oil': 0,
-        'LPG': 0
-    }
-    
-    colors = {
-        'Electricity': 'skyblue',
-        'Natural Gas': 'lightgreen',
-        'Biomass': 'lightcoral',
-        'Coal': 'gold',
-        'Heating Oil': 'lightpink',
-        'LPG': 'lightgray'
-    }
-    
-    for record in history:
-        # Aggregate data
+    # Check if the JSON file exists and read the data if available
+    if os.path.exists(json_file_path):
+        with open(json_file_path, 'r') as json_file:
+            data = json.load(json_file)
+    else:
+        data = None
+
+    # If data is not available in the file or it's outdated, process and write new data
+        # Use timezone-aware datetime
+        seven_days_ago = timezone.now() - timedelta(days=7)
+        history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__gte=seven_days_ago)
+
+        # Prepare data for the current week
+        current_week_data = []
+        for record in history:
+            total_emission = (record.electricity + record.natural_gas + record.biomass +
+                              record.coal + record.heating_oil + record.lpg)
+            current_week_data.append({
+                'date': record.created_at.strftime('%Y-%m-%d'),
+                'total_emission': total_emission
+            })
+
+        # Get previous week data (the week before last 7 days)
+        previous_week_start = seven_days_ago - timedelta(days=7)
+        previous_week_end = seven_days_ago
+        previous_history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__range=(previous_week_start, previous_week_end))
+
+        previous_week_data = []
+        for record in previous_history:
+            total_emission = (record.electricity + record.natural_gas + record.biomass +
+                              record.coal + record.heating_oil + record.lpg)
+            previous_week_data.append({
+                'date': record.created_at.strftime('%Y-%m-%d'),
+                'total_emission': total_emission
+            })
+
+        # Prepare data for JSON response
         data = {
-            'Electricity': record.electricity,
-            'Natural Gas': record.natural_gas,
-            'Biomass': record.biomass,
-            'Coal': record.coal,
-            'Heating Oil': record.heating_oil,
-            'LPG': record.lpg,
-        }
-        labels = list(data.keys())
-        values = list(data.values())
-        bar_colors = [colors[label] for label in labels]
-
-        # Update total for the current week
-        for key in total_current_week.keys():
-            total_current_week[key] += data.get(key, 0)
-        
-        # Plotting the bar chart
-        plt.figure(figsize=(12, 8))  # Increase the figure size
-        plt.bar(labels, values, color=bar_colors)
-        plt.xlabel('Emission Type')
-        plt.ylabel('CO2 Emission (kg)')
-        plt.title(f'Carbon Footprint - {record.created_at.strftime("%Y-%m-%d")}')
-        plt.xticks(rotation=45)
-
-        # Convert plot to image
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png', bbox_inches='tight')  # Use bbox_inches='tight' to avoid clipping
-        buf.seek(0)
-        chart_url = base64.b64encode(buf.read()).decode('utf-8')
-        charts.append({
-            'image_url': f"data:image/png;base64,{chart_url}",
-            'date': record.created_at
-        })
-        plt.close()
-
-    # Get previous period data (for example, the week before the last 7 days)
-    previous_week_start = seven_days_ago - timedelta(days=7)
-    previous_week_end = seven_days_ago
-    previous_history = CarbonFootprintHistory.objects.filter(user=request.user, created_at__range=(previous_week_start, previous_week_end))
-
-    total_previous_week = {
-        'Electricity': 0,
-        'Natural Gas': 0,
-        'Biomass': 0,
-        'Coal': 0,
-        'Heating Oil': 0,
-        'LPG': 0
-    }
-    
-    for record in previous_history:
-        data = {
-            'Electricity': record.electricity,
-            'Natural Gas': record.natural_gas,
-            'Biomass': record.biomass,
-            'Coal': record.coal,
-            'Heating Oil': record.heating_oil,
-            'LPG': record.lpg,
+            'current_week_data': current_week_data,
+            'previous_week_data': previous_week_data
         }
 
-        for key in total_previous_week.keys():
-            total_previous_week[key] += data.get(key, 0)
-    
-    # Calculate reduction or increase
-    reduction_or_increase = {
-        key: total_current_week[key] - total_previous_week.get(key, 0)
-        for key in total_current_week
-    }
-    
-    return render(request, 'registration/carbon_footprint_history.html', {
-        'charts': charts,
-        'total_current_week': total_current_week,
-        'reduction_or_increase': reduction_or_increase
-    })
+        # Write data to JSON file
+        with open(json_file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=4)
+
+    # Return data as JSON response
+    return JsonResponse(data)
 
 # User Login/Signup section
 
@@ -372,33 +333,57 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-def air_quality_view(request):
-    form = AirQualityForm()
-    data = None
 
+def get_air_pollution_data(lat, lon, api_key):
+    url = f"https://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}"
+    
+    # Debugging: Print the URL to ensure it's correct
+    print(f"Pollution API URL: {url}")
+    
+    response = requests.get(url)
+    
+    # Debugging: Print the response status code and text
+    print(f"Pollution API Response Code: {response.status_code}")
+    print(f"Pollution API Response Text: {response.text}")
+    
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def carbon_footprint_api(request):
     if request.method == 'POST':
-        form = AirQualityForm(request.POST)
+        form = AirPollutionForm(request.POST)
         if form.is_valid():
-            city = form.cleaned_data['city']  # Ensure your form has 'city' field
-            date = form.cleaned_data.get('date')  # Use get() for optional fields
+            city = form.cleaned_data['city']
+            api_key = '360f90cb3a3ad39295a9cec0ccbd5fe3'
             
-            # Construct the file path to the CSV file
-            file_path = os.path.join(settings.BASE_DIR, 'carbon_calculator', 'data', 'cleaned_air_quality_data.csv')
+            geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}"
             
-            # Load and filter data
-            try:
-                df = load_air_quality_data(file_path)
-                all_data = df.to_dict(orient='records')  # Convert DataFrame to list of dictionaries
-            except FileNotFoundError:
-                return HttpResponse("Data file not found.", status=500)
+            # Debugging: Print the URL and form data
+            print(f"Geocoding API URL: {geo_url}")
+            print(f"City: {city}")
             
-            # Check the first entry for debugging
-            if all_data:
-                print("First entry in the data:", all_data[0])
+            geo_response = requests.get(geo_url)
+            print(f"Geocoding Response Code: {geo_response.status_code}")
             
-            # Filter data using the correct column name
-            data = [entry for entry in all_data if entry.get('city') == city]
-            if date:
-                data = [entry for entry in data if entry.get('date') == str(date)]
+            if geo_response.status_code == 200 and geo_response.json():
+                geo_data = geo_response.json()[0]
+                lat, lon = geo_data['lat'], geo_data['lon']
+                
+                # Debugging: Print lat and lon
+                print(f"Latitude: {lat}, Longitude: {lon}")
+                
+                pollution_data = get_air_pollution_data(lat, lon, api_key)
+                
+                if pollution_data:
+                    return render(request, 'registration/result.html', {'pollution_data': pollution_data, 'city': city})
+                else:
+                    print("No pollution data found.")
+                    return render(request, 'registration/error.html', {'error': 'Could not retrieve pollution data.'})
+            else:
+                print("City not found or geocoding failed.")
+                return render(request, 'registration/error.html', {'error': 'City not found.'})
+    else:
+        form = AirPollutionForm()
 
-    return render(request, 'registration/air_quality_form.html', {'form': form, 'data': data})
+    return render(request, 'registration/form.html', {'form': form})

@@ -25,7 +25,5 @@ class CarbonFootprintForm(forms.Form):
     lpg_unit = forms.ChoiceField(choices=[('kWh', 'kWh'), ('kg', 'kg'), ('liters', 'liters')], required=False)
 
 
-
-class AirQualityForm(forms.Form):
-    city = forms.CharField(max_length=100)
-    date = forms.DateField(required=False)
+class AirPollutionForm(forms.Form):
+    city = forms.CharField(max_length=100, required=True, help_text="Enter the city name")

@@ -10,14 +10,194 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <link rel="stylesheet" href="./css/custom_style.css">
+
+  <style>
+    body,
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+
+    .chatbot-toggler {
+      position: fixed;
+      right: 40px;
+      bottom: 35px;
+      height: 50px;
+      width: 50px;
+      color: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      cursor: pointer;
+      background: transparent;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      
+    }
+
+    .chatbot-toggler:hover {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .chatbot-toggler span {
+      position: absolute;
+    }
+
+    .chatbot-toggler img {
+      height: 40px;
+      width: 40px;
+    }
+
+    .chatbot-toggler span:last-child {
+      opacity: 0;
+    }
+
+    .show-chatcontainer .chatbot-toggler span:first-child,
+    .chatbot-toggler span:last-child {
+      opacity: 0;
+    }
+
+    .show-chatcontainer .chatbot-toggler span:last-child {
+      opacity: 1;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .chat-container {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 340px;
+      transform: scale(0.5);
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      transform-origin: bottom right;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      transition: all 0.1s ease;
+    }
+
+    .show-chatcontainer .chat-container {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: auto;
+      animation: slideIn 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .header {
+      text-align: center;
+      background-color: green;
+      color: #fff;
+      padding: 5px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .chat-messages {
+      overflow-y: auto;
+      padding: 10px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      color: azure;
+    }
+
+    .message {
+      margin: 7px;
+      font-size: 1rem;
+      padding: 10px 14px;
+    }
+
+    .input-message {
+      display: inline-block;
+      background-color: #abbbc0;
+      max-width: 75%;
+      align-self: flex-start;
+      margin: 5px 10px 7px 0;
+      border-radius: 10px 10px 10px 0;
+    }
+
+    .output-message {
+      display: block;
+      background: green;
+      max-width: 75%;
+      align-self: flex-end;
+      margin: 10px 0px 10px 50px;
+      border-radius: 10px 10px 0 10px;
+      display: flex;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      margin-bottom: 0;
+      background: green;
+    }
+
+    #message-input {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    #send-button {
+      background: transparent;
+      border: none;
+    }
+
+    .chat-input img {
+      height: 30px;
+      width: 35px;
+      transition: background 0.5s linear;
+    }
+
+    .chat-input img:hover {
+      background: green;
+    }
+
+    .chat-input img:active {
+      transform: scale(0.9);
+    }
+  </style>
 </head>
 
 <body>
   {% block content %}
 
   {% include 'navbar.html' %}
-  <div class="bg-gradient-to-r from-blue-100 via-green-100 to-green-200 min-h-screen flex flex-col items-center justify-center relative">
-    <div class="flex flex-col-reverse lg:flex-row items-center w-full lg:w-11/12 mx-auto my-16 lg:my-24 px-4 lg:px-12 drop-shadow-2xl relative z-10">
+  <div class="bg-white min-h-screen flex flex-col items-center justify-center relative">
+    <div
+      class="flex flex-col-reverse lg:flex-row items-center w-full lg:w-11/12 mx-auto my-16 lg:my-24 px-4 lg:px-12 drop-shadow-2xl relative">
       <!-- Text Content -->
       <div class="lg:w-1/2 w-full text-center lg:text-left lg:pr-8">
         <h1 class="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
@@ -37,10 +217,11 @@
           </a>
         </div>
       </div>
-  
+
       <!-- Image Section -->
       <div class="lg:w-1/2 w-full mb-12 lg:mb-0 relative z-10">
-        <div class="relative rounded-lg overflow-hidden shadow-xl hover:shadow-black transform hover:skew-y-12 hover:shadow-xl transition-transform duration-500 ease-in-out">
+        <div
+          class="relative rounded-lg overflow-hidden shadow-xl hover:shadow-black transform hover:skew-y-6 hover:shadow-xl transition-transform duration-500 ease-in-out">
           <img src="{% static 'images/foot.webp' %}" alt="Carbon Footprint"
             class="w-full h-auto object-cover opacity-90">
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-75"></div>
@@ -52,7 +233,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <!-- About Us Section -->
   <main class="pb-100"> <!-- Added padding-bottom to create space for footer -->
@@ -62,18 +243,22 @@
     <section class="relative bg-gradient-to-b from-teal-50 to-white py-20 text-black overflow-hidden">
       <!-- Background SVG -->
       <div class="absolute inset-0 z-0">
-        <svg class="absolute bottom-0 left-0 w-full h-80" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path fill="#e0f2f1" fill-opacity="0.8" d="M0,256L30,229.3C60,203,120,149,180,133.3C240,117,300,139,360,160C420,181,480,203,540,213.3C600,224,660,224,720,213.3C780,203,840,181,900,160C960,139,1020,117,1080,133.3C1140,149,1200,203,1260,229.3C1320,256,1380,256,1410,256H1440V320H1410C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"></path>
+        <svg class="absolute bottom-0 left-0 w-full h-80" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none">
+          <path fill="#e0f2f1" fill-opacity="0.8"
+            d="M0,256L30,229.3C60,203,120,149,180,133.3C240,117,300,139,360,160C420,181,480,203,540,213.3C600,224,660,224,720,213.3C780,203,840,181,900,160C960,139,1020,117,1080,133.3C1140,149,1200,203,1260,229.3C1320,256,1380,256,1410,256H1440V320H1410C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z">
+          </path>
         </svg>
       </div>
-    
+
       <div class="relative container mx-auto px-6 z-10">
         <!-- Main Section -->
         <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between mb-16 relative z-10">
           <!-- Visual Section (Left Side) -->
           <div class="lg:w-1/2 relative transform transition-transform duration-300 hover:scale-105">
             <div class="absolute inset-0 z-0 overflow-hidden">
-              <svg class="absolute top-0 right-0 w-1/2 h-full transform -translate-x-1/2" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+              <svg class="absolute top-0 right-0 w-1/2 h-full transform -translate-x-1/2" viewBox="0 0 500 500"
+                xmlns="http://www.w3.org/2000/svg">
                 <circle cx="200" cy="200" r="200" fill="rgba(238, 238, 238, 0.5)" />
               </svg>
             </div>
@@ -81,7 +266,7 @@
               class="w-full h-auto object-cover rounded-2xl shadow-2xl transform hover:scale-110 transition-transform duration-500"
               data-aos="zoom-in" data-aos-duration="1600">
           </div>
-    
+
           <!-- Text Content (Right Side) -->
           <div class="lg:w-1/2 space-y-8 text-center lg:text-left mt-20 lg:mt-0 ml-20">
             <div class="relative z-10">
@@ -89,7 +274,9 @@
                 Discover Our Mission
               </h2>
               <p class="text-lg max-w-3xl mx-auto lg:mx-0" data-aos="fade-up" data-aos-duration="1200">
-                Our mission is to drive sustainable innovation and empower individuals to make impactful, eco-friendly choices. We believe in transforming the way people interact with the environment through insightful data and actionable solutions.
+                Our mission is to drive sustainable innovation and empower individuals to make impactful, eco-friendly
+                choices. We believe in transforming the way people interact with the environment through insightful data
+                and actionable solutions.
               </p>
               <a href="/carbon_footprint_form/"
                 class="inline-block rounded-full mt-10 bg-teal-600 text-white px-8 py-4 font-semibold shadow-lg hover:bg-teal-700 transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
@@ -97,34 +284,43 @@
             </div>
           </div>
         </div>
-    
+
         <!-- Mission and Values Section -->
         <div class="text-center">
-          <h3 class="text-3xl lg:text-4xl font-extrabold mb-8 relative z-10" data-aos="fade-up" data-aos-duration="1800">
+          <h3 class="text-3xl lg:text-4xl font-extrabold mb-8 relative z-10" data-aos="fade-up"
+            data-aos-duration="1800">
             Our Core Values
           </h3>
           <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
+            <div
+              class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
               data-aos="fade-left" data-aos-duration="2000">
-              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">✓</div>
+              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">
+                ✓</div>
               <h4 class="text-xl font-semibold mb-2">Sustainability</h4>
               <p class="text-center">Our practices focus on long-term environmental benefits.</p>
             </div>
-            <div class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
+            <div
+              class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
               data-aos="fade-left" data-aos-duration="2200">
-              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">✓</div>
+              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">
+                ✓</div>
               <h4 class="text-xl font-semibold mb-2">Integrity</h4>
               <p class="text-center">Transparent and honest interactions with our community.</p>
             </div>
-            <div class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
+            <div
+              class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
               data-aos="fade-left" data-aos-duration="2400">
-              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">✓</div>
+              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">
+                ✓</div>
               <h4 class="text-xl font-semibold mb-2">Innovation</h4>
               <p class="text-center">Continuous improvement through innovative solutions.</p>
             </div>
-            <div class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
+            <div
+              class="bg-teal-200 p-8 rounded-xl shadow-xl flex flex-col items-center justify-center transform transition-transform hover:scale-105 relative z-10"
               data-aos="fade-left" data-aos-duration="2600">
-              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">✓</div>
+              <div class="bg-teal-500 text-white rounded-full h-16 w-16 flex items-center justify-center text-3xl mb-4">
+                ✓</div>
               <h4 class="text-xl font-semibold mb-2">Collaboration</h4>
               <p class="text-center">Partnering to drive impactful environmental change.</p>
             </div>
@@ -132,10 +328,10 @@
         </div>
       </div>
     </section>
-    
-    
-    
-    
+
+
+
+
 
 
 
@@ -247,61 +443,83 @@
         <a href="#"
           class="flex-none bg-white shadow-lg rounded-xl transform transition-transform duration-500 hover:rotate-3 hover:shadow-2xl snap-start w-[300px] md:w-[400px] h-[350px] relative group">
           <div class="relative h-full overflow-hidden rounded-xl">
-            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="{% static '/images/recycle.jpg' %}" alt="">
-            <div class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30"></div>
+            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              src="{% static '/images/recycle.jpg' %}" alt="">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30">
+            </div>
             <div class="absolute inset-0 flex items-center justify-center text-center text-white p-4">
               <div>
                 <h5 class="text-2xl font-bold mb-2">Recycle Waste</h5>
-                <p class="text-sm font-light mb-4">Explore futuristic tech trends and innovations that are shaping tomorrow.</p>
-                <button class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Learn More</button>
+                <p class="text-sm font-light mb-4">Explore futuristic tech trends and innovations that are shaping
+                  tomorrow.</p>
+                <button
+                  class="bg-teal-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Learn
+                  More</button>
               </div>
             </div>
           </div>
         </a>
-    
+
         <!-- Card 2 -->
         <a href="#"
           class="flex-none bg-white shadow-lg rounded-xl transform transition-transform duration-500 hover:rotate-3 hover:shadow-2xl snap-start w-[300px] md:w-[400px] h-[350px] relative group">
           <div class="relative h-full overflow-hidden rounded-xl">
-            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="{% static '/images/co2.jpg' %}" alt="">
-            <div class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30"></div>
+            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              src="{% static '/images/co2.jpg' %}" alt="">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30">
+            </div>
             <div class="absolute inset-0 flex items-center justify-center text-center text-white p-4">
               <div>
                 <h5 class="text-2xl font-bold mb-2">Innovation Highlights</h5>
                 <p class="text-sm font-light mb-4">Uncover the key innovations that are transforming the industry.</p>
-                <button class="bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Discover More</button>
+                <button
+                  class="bg-purple-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Discover
+                  More</button>
               </div>
             </div>
           </div>
         </a>
-    
+
         <!-- Card 3 -->
         <a href="#"
           class="flex-none bg-white shadow-lg rounded-xl transform transition-transform duration-500 hover:rotate-3 hover:shadow-2xl snap-start w-[300px] md:w-[400px] h-[350px] relative group">
           <div class="relative h-full overflow-hidden rounded-xl">
-            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="{% static '/images/save_world.jpg' %}" alt="">
-            <div class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30"></div>
+            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              src="{% static '/images/save_world.jpg' %}" alt="">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30">
+            </div>
             <div class="absolute inset-0 flex items-center justify-center text-center text-white p-4">
               <div>
                 <h5 class="text-2xl font-bold mb-2">Tech Revolution 2021</h5>
                 <p class="text-sm font-light mb-4">A look back at the revolutionary tech changes of the year.</p>
-                <button class="bg-pink-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Read More</button>
+                <button
+                  class="bg-pink-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Read
+                  More</button>
               </div>
             </div>
           </div>
         </a>
-    
+
         <!-- Card 4 -->
         <a href="#"
           class="flex-none bg-white shadow-lg rounded-xl transform transition-transform duration-500 hover:rotate-3 hover:shadow-2xl snap-start w-[300px] md:w-[400px] h-[350px] relative group">
           <div class="relative h-full overflow-hidden rounded-xl">
-            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="{% static '/images/foot.webp' %}" alt="">
-            <div class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30"></div>
+            <img class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              src="{% static '/images/foot.webp' %}" alt="">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black opacity-50 transition-opacity duration-300 group-hover:opacity-30">
+            </div>
             <div class="absolute inset-0 flex items-center justify-center text-center text-white p-4">
               <div>
                 <h5 class="text-2xl font-bold mb-2">Emerging Tech Trends</h5>
-                <p class="text-sm font-light mb-4">Get insights into the emerging tech trends and future predictions.</p>
-                <button class="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Explore Now</button>
+                <p class="text-sm font-light mb-4">Get insights into the emerging tech trends and future predictions.
+                </p>
+                <button
+                  class="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">Explore
+                  Now</button>
               </div>
             </div>
           </div>
@@ -311,181 +529,238 @@
 
 
     <section class="bg-gray-50 py-16">
-  <div class="container mx-auto text-center">
-    <h2 class="text-4xl font-semibold text-gray-800 mb-8">Our Success Stories</h2>
-    <p class="text-gray-600 mb-12 text-lg max-w-3xl mx-auto">
-      Discover how our platform has helped individuals and organizations take meaningful steps toward reducing their carbon footprint. 
-      These success stories showcase the positive impact of environmental awareness and action.
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      <!-- Story 1 -->
-      <div class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
-        <img src="{% static 'images/save_world.jpg' %}" alt="John's Journey" class="w-full h-56 object-cover rounded-md mb-6">
-        <h3 class="text-2xl font-bold text-green-600 mb-4">John's Journey</h3>
-        <p class="text-gray-700 mb-4">
-          John, a 45-year-old software engineer, cut his carbon emissions by 30% in just one year. By using our platform to monitor and optimize his energy consumption, John made his home and lifestyle more eco-friendly.
+      <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-semibold text-gray-800 mb-8">Our Success Stories</h2>
+        <p class="text-gray-600 mb-12 text-lg max-w-3xl mx-auto">
+          Discover how our platform has helped individuals and organizations take meaningful steps toward reducing their
+          carbon footprint.
+          These success stories showcase the positive impact of environmental awareness and action.
         </p>
-        <blockquote class="italic text-gray-500">
-          "I never realized how small changes could make such a huge difference. Thanks to this platform, I’m now living a much greener life."
-        </blockquote>
-        <div class="mt-6">
-          <a href="#" class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
-            Read Full Story
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <!-- Story 1 -->
+          <div
+            class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
+            <img src="{% static 'images/save_world.jpg' %}" alt="John's Journey"
+              class="w-full h-56 object-cover rounded-md mb-6">
+            <h3 class="text-2xl font-bold text-green-600 mb-4">John's Journey</h3>
+            <p class="text-gray-700 mb-4">
+              John, a 45-year-old software engineer, cut his carbon emissions by 30% in just one year. By using our
+              platform to monitor and optimize his energy consumption, John made his home and lifestyle more
+              eco-friendly.
+            </p>
+            <blockquote class="italic text-gray-500">
+              "I never realized how small changes could make such a huge difference. Thanks to this platform, I’m now
+              living a much greener life."
+            </blockquote>
+            <div class="mt-6">
+              <a href="#"
+                class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
+                Read Full Story
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 2 -->
+          <div
+            class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
+            <img src="{% static 'images/foot.webp' %}" alt="Eco Solutions Inc."
+              class="w-full h-56 object-cover rounded-md mb-6">
+            <h3 class="text-2xl font-bold text-green-600 mb-4">Eco Solutions Inc.</h3>
+            <p class="text-gray-700 mb-4">
+              Eco Solutions Inc., a large corporation, cut their carbon footprint by 40% within 18 months. By
+              integrating our API into their energy management systems, they optimized energy use across multiple
+              locations.
+            </p>
+            <blockquote class="italic text-gray-500">
+              "With the right data at our fingertips, we were able to make informed decisions that benefited both our
+              business and the environment."
+            </blockquote>
+            <div class="mt-6">
+              <a href="#"
+                class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
+                Discover How They Did It
+              </a>
+            </div>
+          </div>
+
+          <!-- Story 3 -->
+          <div
+            class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
+            <img src="{% static 'images/recycle.jpg' %}" alt="Sarah's Green Home"
+              class="w-full h-56 object-cover rounded-md mb-6">
+            <h3 class="text-2xl font-bold text-green-600 mb-4">Sarah's Green Home</h3>
+            <p class="text-gray-700 mb-4">
+              Sarah transformed her suburban home into an energy-efficient, green powerhouse. Using our tools and
+              insights, she reduced her carbon footprint by over 25% in just 6 months.
+            </p>
+            <blockquote class="italic text-gray-500">
+              "Going green was easier than I thought. This platform made it simple to track progress and set achievable
+              goals for my family."
+            </blockquote>
+            <div class="mt-6">
+              <a href="#"
+                class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
+                See Her Journey
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action Section -->
+        <div class="mt-16 text-center">
+          <h3 class="text-3xl font-semibold text-gray-800 mb-6">Start Your Journey Today</h3>
+          <p class="text-gray-600 max-w-xl mx-auto mb-8">
+            Join the thousands of individuals and businesses taking control of their environmental impact. Use our
+            platform to track, manage, and reduce your carbon footprint.
+          </p>
+          <a href="#sign-up"
+            class="inline-block bg-green-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-green-500">
+            Sign Up Now
           </a>
         </div>
       </div>
+    </section>
 
-      <!-- Story 2 -->
-      <div class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
-        <img src="{% static 'images/foot.webp' %}" alt="Eco Solutions Inc." class="w-full h-56 object-cover rounded-md mb-6">
-        <h3 class="text-2xl font-bold text-green-600 mb-4">Eco Solutions Inc.</h3>
-        <p class="text-gray-700 mb-4">
-          Eco Solutions Inc., a large corporation, cut their carbon footprint by 40% within 18 months. By integrating our API into their energy management systems, they optimized energy use across multiple locations.
-        </p>
-        <blockquote class="italic text-gray-500">
-          "With the right data at our fingertips, we were able to make informed decisions that benefited both our business and the environment."
-        </blockquote>
-        <div class="mt-6">
-          <a href="#" class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
-            Discover How They Did It
-          </a>
-        </div>
-      </div>
 
-      <!-- Story 3 -->
-      <div class="bg-white p-8 rounded-lg shadow-2xl text-left transform transition-transform hover:scale-110 delay-50">
-        <img src="{% static 'images/recycle.jpg' %}" alt="Sarah's Green Home" class="w-full h-56 object-cover rounded-md mb-6">
-        <h3 class="text-2xl font-bold text-green-600 mb-4">Sarah's Green Home</h3>
-        <p class="text-gray-700 mb-4">
-          Sarah transformed her suburban home into an energy-efficient, green powerhouse. Using our tools and insights, she reduced her carbon footprint by over 25% in just 6 months.
-        </p>
-        <blockquote class="italic text-gray-500">
-          "Going green was easier than I thought. This platform made it simple to track progress and set achievable goals for my family."
-        </blockquote>
-        <div class="mt-6">
-          <a href="#" class="inline-block bg-green-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-500">
-            See Her Journey
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Call to Action Section -->
-    <div class="mt-16 text-center">
-      <h3 class="text-3xl font-semibold text-gray-800 mb-6">Start Your Journey Today</h3>
-      <p class="text-gray-600 max-w-xl mx-auto mb-8">
-        Join the thousands of individuals and businesses taking control of their environmental impact. Use our platform to track, manage, and reduce your carbon footprint.
-      </p>
-      <a href="#sign-up" class="inline-block bg-green-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-green-500">
-        Sign Up Now
-      </a>
-    </div>
-  </div>
-</section>
-
-    
 
   </main>
   {% endblock %}
 
+
+  <div id="parent">
+    <!-- Chatbot toggler button -->
+    <button class="chatbot-toggler" id="chat-toggler">
+      <span><img src="{% static 'images/chat-bot.png' %}" alt="Chatbot"></span>
+      <span>&times;</span>
+    </button>
+
+    <!-- Chatbot container -->
+    <div class="chat-container z-50" id="chat-container">
+      <div class="header">
+        <h2>Chat with Us</h2>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message..." />
+        <button id="send-button">
+          <img src="{% static 'images/send.png' %}" alt="Send">
+        </button>
+      </div>
+    </div>
+  </div>
+
   <footer class="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 px-8 lg:px-12">
     <div class="container mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-12">
-            <!-- About Us -->
-            <div class="lg:col-span-2">
-                <h3 class="text-2xl font-semibold mb-4 text-teal-400">About Us</h3>
-                <p class="text-sm mb-6 text-gray-300">
-                    Our mission is to empower individuals and businesses with tools and knowledge to reduce their carbon footprint, fostering a healthier planet. Join us in the fight against climate change!
-                </p>
-                <div class="space-y-2 text-gray-400">
-                    <p><a href="mailto:info@company.com" class="hover:text-teal-400 transition">info@company.com</a></p>
-                    <p><a href="tel:+1234567890" class="hover:text-teal-400 transition">+123 456 7890</a></p>
-                    <p>1234 Elm Street, Suite 567<br>City, State, 12345</p>
-                </div>
-            </div>
-
-            <!-- Explore -->
-            <div>
-                <h3 class="text-xl font-semibold mb-4 text-teal-400">Explore</h3>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="{% url 'index' %}" class="hover:text-teal-400 transition">Home</a></li>
-                    <li><a href="{% url 'about' %}" class="hover:text-teal-400 transition">About Us</a></li>
-                    <li><a href="{% url 'carbon_footprint_view' %}" class="hover:text-teal-400 transition">Calculate Carbon Footprint</a></li>
-                    <li><a href="{% url 'contact' %}" class="hover:text-teal-400 transition">Contact Us</a></li>
-                    <li><a href="{% url 'donate' %}" class="hover:text-teal-400 transition">Donate</a></li>
-                    <li><a href="{% url 'resources' %}" class="hover:text-teal-400 transition">Resources</a></li>
-                    <li><a href="{% url 'blog' %}" class="hover:text-teal-400 transition">Blog</a></li>
-                </ul>
-            </div>
-
-            <!-- Carbon Footprint Resources -->
-            <div>
-                <h3 class="text-xl font-semibold mb-4 text-teal-400">Carbon Footprint Resources</h3>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="https://www.epa.gov/carbon-footprint-calculator" target="_blank" class="hover:text-teal-400 transition">EPA Carbon Calculator</a></li>
-                    <li><a href="https://www.footprintnetwork.org" target="_blank" class="hover:text-teal-400 transition">Global Footprint Network</a></li>
-                    <li><a href="https://www.carbontrust.com" target="_blank" class="hover:text-teal-400 transition">The Carbon Trust</a></li>
-                    <li><a href="https://www.wwf.org.uk/footprint" target="_blank" class="hover:text-teal-400 transition">WWF Footprint Calculator</a></li>
-                    <li><a href="https://www.unenvironment.org/resources" target="_blank" class="hover:text-teal-400 transition">UN Environment</a></li>
-                </ul>
-            </div>
-
-            <!-- Sustainability Guides -->
-            <div>
-                <h3 class="text-xl font-semibold mb-4 text-teal-400">Sustainability Guides</h3>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="https://www.nrdc.org/stories/guide-your-carbon-footprint" target="_blank" class="hover:text-teal-400 transition">NRDC Guide</a></li>
-                    <li><a href="https://www.greenpeace.org/usa/sustainable-living/" target="_blank" class="hover:text-teal-400 transition">Greenpeace Living</a></li>
-                    <li><a href="https://www.sierraclub.org/sustainable-living" target="_blank" class="hover:text-teal-400 transition">Sierra Club Guide</a></li>
-                    <li><a href="https://www.carbonneutral.com/the-carbonneutral-protocol" target="_blank" class="hover:text-teal-400 transition">CarbonNeutral Protocol</a></li>
-                    <li><a href="https://www.bcorporation.net/en-us/certification/environment" target="_blank" class="hover:text-teal-400 transition">B Corp Sustainability</a></li>
-                </ul>
-            </div>
-
-            <!-- Newsletter Subscription -->
-            <div class="lg:col-span-2">
-                <h3 class="text-xl font-semibold mb-4 text-teal-400">Join Our Community</h3>
-                <p class="text-sm mb-4 text-gray-300">Sign up for our newsletter to stay updated on the latest carbon reduction tips, innovations, and exclusive insights.</p>
-                <form class="flex flex-col space-y-4">
-                    <input type="email" placeholder="Your email address" required
-                        class="w-full p-3 text-gray-900 rounded-lg border border-gray-500 focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
-                    <button type="submit" class="bg-teal-500 py-2 px-4 rounded-lg text-white font-semibold hover:bg-teal-600 transition">Subscribe</button>
-                </form>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-12">
+        <!-- About Us -->
+        <div class="lg:col-span-2">
+          <h3 class="text-2xl font-semibold mb-4 text-teal-400">About Us</h3>
+          <p class="text-sm mb-6 text-gray-300">
+            Our mission is to empower individuals and businesses with tools and knowledge to reduce their carbon
+            footprint, fostering a healthier planet. Join us in the fight against climate change!
+          </p>
+          <div class="space-y-2 text-gray-400">
+            <p><a href="mailto:info@company.com" class="hover:text-teal-400 transition">rudrajad2005@gmail.com</a></p>
+            <p><a href="tel:+1234567890" class="hover:text-teal-400 transition">+123 456 7890</a></p>
+            <p>1234 Elm Street, Suite 567<br>City, State, 12345</p>
+          </div>
         </div>
 
-        <!-- Footer Bottom -->
-        <div class="mt-12 border-t border-gray-700 pt-8 text-center text-sm text-gray-500">
-            <p>© 2024 Your Company. All rights reserved.</p>
-            <div class="mt-4 space-x-4 text-teal-400">
-                <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition">Terms of Service</a>
-                <a href="#" class="hover:text-white transition">Cookie Policy</a>
-            </div>
-            <div class="mt-8 flex justify-center space-x-4">
-                <a href="#" class="text-teal-400 hover:text-white transition">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <!-- Facebook SVG -->
-                    </svg>
-                </a>
-                <a href="#" class="text-teal-400 hover:text-white transition">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <!-- Twitter SVG -->
-                    </svg>
-                </a>
-                <a href="#" class="text-teal-400 hover:text-white transition">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <!-- LinkedIn SVG -->
-                    </svg>
-                </a>
-            </div>
+        <!-- Explore -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4 text-teal-400">Explore</h3>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="{% url 'index' %}" class="hover:text-teal-400 transition">Home</a></li>
+            <li><a href="{% url 'about' %}" class="hover:text-teal-400 transition">About Us</a></li>
+            <li><a href="{% url 'carbon_footprint_view' %}" class="hover:text-teal-400 transition">Calculate Carbon
+                Footprint</a></li>
+            <li><a href="{% url 'contact' %}" class="hover:text-teal-400 transition">Contact Us</a></li>
+            <li><a href="{% url 'donate' %}" class="hover:text-teal-400 transition">Donate</a></li>
+            <li><a href="{% url 'resources' %}" class="hover:text-teal-400 transition">Resources</a></li>
+            <li><a href="{% url 'blog' %}" class="hover:text-teal-400 transition">Blog</a></li>
+          </ul>
         </div>
+
+        <!-- Carbon Footprint Resources -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4 text-teal-400">Carbon Footprint Resources</h3>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="https://www.epa.gov/carbon-footprint-calculator" target="_blank"
+                class="hover:text-teal-400 transition">EPA Carbon Calculator</a></li>
+            <li><a href="https://www.footprintnetwork.org" target="_blank" class="hover:text-teal-400 transition">Global
+                Footprint Network</a></li>
+            <li><a href="https://www.carbontrust.com" target="_blank" class="hover:text-teal-400 transition">The Carbon
+                Trust</a></li>
+            <li><a href="https://www.wwf.org.uk/footprint" target="_blank" class="hover:text-teal-400 transition">WWF
+                Footprint Calculator</a></li>
+            <li><a href="https://www.unenvironment.org/resources" target="_blank"
+                class="hover:text-teal-400 transition">UN Environment</a></li>
+          </ul>
+        </div>
+
+        <!-- Sustainability Guides -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4 text-teal-400">Sustainability Guides</h3>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="https://www.nrdc.org/stories/guide-your-carbon-footprint" target="_blank"
+                class="hover:text-teal-400 transition">NRDC Guide</a></li>
+            <li><a href="https://www.greenpeace.org/usa/sustainable-living/" target="_blank"
+                class="hover:text-teal-400 transition">Greenpeace Living</a></li>
+            <li><a href="https://www.sierraclub.org/sustainable-living" target="_blank"
+                class="hover:text-teal-400 transition">Sierra Club Guide</a></li>
+            <li><a href="https://www.carbonneutral.com/the-carbonneutral-protocol" target="_blank"
+                class="hover:text-teal-400 transition">CarbonNeutral Protocol</a></li>
+            <li><a href="https://www.bcorporation.net/en-us/certification/environment" target="_blank"
+                class="hover:text-teal-400 transition">B Corp Sustainability</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter Subscription -->
+        <div class="lg:col-span-2">
+          <h3 class="text-xl font-semibold mb-4 text-teal-400">Join Our Community</h3>
+          <p class="text-sm mb-4 text-gray-300">Sign up for our newsletter to stay updated on the latest carbon
+            reduction tips, innovations, and exclusive insights.</p>
+          <form class="flex flex-col space-y-4">
+            <input type="email" placeholder="Your email address" required
+              class="w-full p-3 text-gray-900 rounded-lg border border-gray-500 focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
+            <button type="submit"
+              class="bg-teal-500 py-2 px-4 rounded-lg text-white font-semibold hover:bg-teal-600 transition">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="mt-12 border-t border-gray-700 pt-8 text-center text-sm text-gray-500">
+        <p>© 2024 Your Company. All rights reserved.</p>
+        <div class="mt-4 space-x-4 text-teal-400">
+          <a href="#" class="hover:text-white transition">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition">Terms of Service</a>
+          <a href="#" class="hover:text-white transition">Cookie Policy</a>
+        </div>
+        <div class="mt-8 flex justify-center space-x-4">
+          <a href="#" class="text-teal-400 hover:text-white transition">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <!-- Facebook SVG -->
+            </svg>
+          </a>
+          <a href="#" class="text-teal-400 hover:text-white transition">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <!-- Twitter SVG -->
+            </svg>
+          </a>
+          <a href="#" class="text-teal-400 hover:text-white transition">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <!-- LinkedIn SVG -->
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
-</footer>
+  </footer>
 
-  
-  
+
+
 
   <div id="popup-message"
     class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white p-4 mt-3 rounded-lg shadow-lg z-50 hidden">
@@ -590,6 +865,82 @@
     document.getElementById("close-popup").addEventListener("click", function () {
       // remove the show class to hide the popup
       document.getElementById("popup-message").classList.remove("show");
+    });
+
+
+
+    // Chat-bot code below 
+    document.addEventListener("DOMContentLoaded", function () {
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      const chatMessages = document.getElementById('chat-messages');
+      const toggler = document.getElementById("chat-toggler");
+      const chatContainer = document.getElementById("chat-container");
+      const parent = document.getElementById('parent');
+
+      sendButton.addEventListener('click', () => {
+        const messageText = messageInput.value.trim();
+        if (messageText !== '') {
+          const inputMessage = createMessage(messageText, 'input-message');
+          chatMessages.appendChild(inputMessage);
+
+          setTimeout(() => {
+            let responseText = '';
+            switch (messageText.toLowerCase()) {
+              case 'hi':
+              case 'hello':
+                responseText = 'Hello! How can I help you?';
+                break;
+              case 'what are some ways to reduce carbon footprint?':
+                responseText = 'There are many ways to lower your carbon footprint!You could reduce car travel by biking or using public transport, switch to renewable energy sources, minimize meat consumption, or reduce waste by recycling and composting. Would you like specific tips for your home, travel, or diet?';
+                break;
+              case 'name':
+              case 'how does my diet affect my carbon footprint?':
+                responseText = "Your diet can have a significant impact! Generally, plant-based foods like fruits, vegetables, and grains have a lower carbon footprint than meat and dairy. For example, producing 1 kilogram of beef emits around 27 kg of CO2, while producing the same amount of lentils emits just 0.9 kg";
+                break;
+              case 'what is a carbon footprint?':
+              case 'carbon footprint':
+                responseText = "A carbon footprint is the total amount of greenhouse gases (GHGs), primarily carbon dioxide (CO₂), that are emitted directly or indirectly by human activities. This includes emissions from burning fossil fuels for electricity, heating, and transportation, as well as emissions from manufacturing and consumption of goods and services.";
+                break;
+              case 'how can I calculate my carbon footprint?':
+                responseText = "A carbon footprint is the total amount of greenhouse gases (GHGs), primarily carbon dioxide (CO₂), that are emitted directly or indirectly by human activities. This includes emissions from burning fossil fuels for electricity, heating, and transportation, as well as emissions from manufacturing and consumption of goods and services.";
+                break;
+              case 'what are the benefits of reducing my carbon footprint?':
+                responseText = "Reducing your carbon footprint helps combat climate change, improves air quality, saves money on energy bills, and promotes a healthier planet for future generations.";
+                break;
+              case 'How do different modes of transportation impact my carbon footprint?':
+                responseText = "Different modes of transportation have varying impacts on your carbon footprint: driving a car or flying produces high emissions, while biking, walking, or using public transport generates much less CO2.";
+                break;
+              default:
+                responseText = "Sorry, this is a prototype.";
+                break;
+            }
+
+            const outputMessage = createMessage(responseText, 'output-message');
+            chatMessages.appendChild(outputMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 500);
+
+          messageInput.value = '';
+        }
+      });
+
+      messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          sendButton.click();
+        }
+      });
+
+      function createMessage(text, className) {
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = text;
+        messageDiv.classList.add('message', className);
+        return messageDiv;
+      }
+
+      toggler.addEventListener("click", () => {
+        parent.classList.toggle("show-chatcontainer");
+      });
     });
   </script>
 </body>

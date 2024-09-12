@@ -2,282 +2,155 @@
 {% load static %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Footprint Result</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                        observer.unobserve(entry.target); // Optional: Remove observer after animation
-                    }
-                });
-            }, observerOptions);
-
-            const fadeElements = document.querySelectorAll('.fade-on-scroll');
-            fadeElements.forEach(el => observer.observe(el));
-
-            // Add scroll effects for other elements
-            const scrollElements = document.querySelectorAll('.scroll-effect');
-            const handleScroll = () => {
-                scrollElements.forEach(el => {
-                    const scrollPosition = window.scrollY;
-                    const elementPosition = el.offsetTop;
-                    const elementHeight = el.offsetHeight;
-
-                    if (scrollPosition >= elementPosition - window.innerHeight && scrollPosition <= elementPosition + elementHeight) {
-                        el.classList.add('scroll-effect-active');
-                    } else {
-                        el.classList.remove('scroll-effect-active');
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', handleScroll);
-        });
-    </script>
-    <style>
-        .custom-card,
-        .custom-card-2,
-        .custom-card-3 {
-            background-color: white;
-            color: black;
-            transition: all 0.3s ease;
-        }
-
-        .custom-card:hover,
-        .custom-card-2:hover,
-        .custom-card-3:hover,
-        .hover-effect:hover {
-            transform: scale(1.05);
-            background-color: #0091E1;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .hover-effect {
-            background-color: white;
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #0091E1, #FFD3F4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
-        .gradient-text-2 {
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
-        .bullet-list {
-            list-style-type: disc;
-            /* Use disc for bullets */
-            padding-left: 20px;
-            /* Space for bullets */
-            margin-top: 0;
-            /* Remove default margin */
-            margin-bottom: 20px;
-            /* Space between list items */
-        }
-
-        .bullet-list li {
-            margin-bottom: 10px;
-            /* Space between items */
-            font-size: 1.25rem;
-            /* Font size for better readability */
-        }
-
-        .fadeIn {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
 
 
 
-        .fade-on-scroll.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+<!-- Page Content -->
+<header class="bg-white text-black-100 fixed w-full top-0 z-50">
+    {% include 'navbar.html' %}
+</header>
 
-        .scroll-effect {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-        }
-
-        .scroll-effect-active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        
-    </style>
-</head>
-
-<body class="bg-gray-100 flex flex-col h-screen">
-    <header class="bg-white text-black-100 fixed w-full top-0 z-50">
-
-        {% include 'navbar.html' %}
-
-    </header>
-
-    <div class="relative z-10 card bg-white p-6 rounded-lg mb-8 max-w-4xl mx-auto">
-        <h3 class="text-2xl font-semibold mb-4">Carbon Footprint Visualization</h3>
-        <img src="{{ chart }}" alt="Carbon Footprint Chart" class="w-full max-w-4xl mx-auto rounded-lg shadow-lg">
-      </div>
-
-    <main class="flex-1 container mx-auto p-6 mt-60">
-        <!-- Carousel Wrapper -->
-        <div class="relative w-full h-[700px] perspective flex justify-center items-center">
-            <div id="carousel" class="carousel-container relative w-full h-full mx-auto">
-                <!-- Table 1 -->
-                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500 overflow-hidden">
-                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Carbon Footprint Details</h1>
-                    <p class="text-sm text-gray-600 mb-4">Total carbon footprint: <span class="font-semibold text-green-700">{{ data.total_carbon_footprint }}</span> kg CO2e/year</p>
-                    
-                    <div class="relative overflow-x-auto overflow-y-auto max-h-[250px]">
-                        <table class="w-full text-xs text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase table-header">
-                                <tr>
-                                    <th scope="col" class="px-3 py-2">Description</th>
-                                    <th scope="col" class="px-3 py-2">Emissions</th>
-                                    <th scope="col" class="px-3 py-2">Unit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Electricity</th>
-                                    <td class="px-3 py-2">{{ data.electricity }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Natural Gas</th>
-                                    <td class="px-3 py-2">{{ data.natural_gas }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Biomass</th>
-                                    <td class="px-3 py-2">{{ data.biomass }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Coal</th>
-                                    <td class="px-3 py-2">{{ data.coal }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">Heating Oil</th>
-                                    <td class="px-3 py-2">{{ data.heating_oil }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                                <tr class="bg-white border-b">
-                                    <th scope="row" class="px-3 py-2 font-medium text-gray-900">LPG</th>
-                                    <td class="px-3 py-2">{{ data.lpg }}</td>
-                                    <td class="px-3 py-2">kg CO2e/year</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr class="font-semibold text-gray-900 table-footer">
-                                    <th scope="row" class="px-3 py-3 text-xs">Total</th>
-                                    <td class="px-3 py-3">{{ data.total_carbon_footprint }}</td>
-                                    <td class="px-3 py-3">kg CO2e/year</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+<main class="pt-10 px-4">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="w-[700ox] bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 overflow-hidden">
+            <div class="flex justify-between items-start w-full">
+                <div class="flex-col items-center">
+                    <div class="flex items-center mb-1">
+                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white me-1">Website traffic
+                        </h5>
+                        <svg data-popover-target="chart-info" data-popover-placement="bottom"
+                            class="w-3.5 h-3.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm0 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm1-5.034V12a1 1 0 0 1-2 0v-1.418a1 1 0 0 1 1.038-.999 1.436 1.436 0 0 0 1.488-1.441 1.501 1.501 0 1 0-3-.116.986.986 0 0 1-1.037.961 1 1 0 0 1-.96-1.037A3.5 3.5 0 1 1 11 11.466Z" />
+                        </svg>
+                        <div data-popover id="chart-info" role="tooltip"
+                            class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                            <div class="p-3 space-y-2">
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Activity growth - Incremental
+                                </h3>
+                                <p>Report helps navigate cumulative growth of community activities. Ideally, the chart
+                                    should have a growing trend, as stagnating chart signifies a significant decrease of
+                                    community activity.</p>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Calculation</h3>
+                                <p>For each date bucket, the all-time volume of activities is calculated. This means
+                                    that activities in period n contain all activities up to period n, plus the
+                                    activities generated by your community in period.</p>
+                                <a href="#"
+                                    class="flex items-center font-medium text-blue-600 dark:text-blue-500 dark:hover:text-blue-600 hover:text-blue-700 hover:underline">Read
+                                    more <svg class="w-2 h-2 ms-1.5 rtl:rotate-180" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 9 4-4-4-4" />
+                                    </svg></a>
+                            </div>
+                            <div data-popper-arrow></div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Other tables follow similarly -->
-                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
-                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
-                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
+                <button id="dateRangeButton" data-dropdown-toggle="dateRangeDropdown"
+                    data-dropdown-ignore-click-outside-class="datepicker" type="button"
+                    class="inline-flex items-center text-blue-700 dark:text-blue-600 font-medium hover:underline">31 Nov
+                    - 31 Dev <svg class="w-3 h-3 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg></button>
+                <div id="dateRangeDropdown"
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-80 lg:w-96 dark:bg-gray-700 dark:divide-gray-600">
+                    <div class="p-3" aria-labelledby="dateRangeButton">
+                        <div date-rangepicker datepicker-autohide class="flex items-center">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input name="start" type="text"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Start date">
+                            </div>
+                            <span class="mx-2 text-gray-500 dark:text-gray-400">to</span>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input name="end" type="text"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="End date">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
-                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
-                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
-                </div>
-                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
-                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
-                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
-                </div>
-                <div class="absolute w-[500px] h-[400px] table-card bg-white p-8 rounded-lg shadow-lg transform transition-transform duration-500" style="transform: rotateY(72deg) translateZ(400px);">
-                    <h1 class="text-xl font-extrabold text-gray-800 mb-2">Table 2</h1>
-                    <p class="text-sm text-gray-600">Carbon Footprint Details</p>
-                </div>
-                <!-- Add remaining tables (3, 4, 5) similarly -->
+            </div>
+            <div id="chart" class="py-6 flex justify-center w-full" style="width: 500px; height: 500px;">
+            </div>
+            <div id="data-table" class="py-6">
+                <!-- Data table will be inserted here -->
             </div>
         </div>
-    </main>
-    
-    <script>
-        let currentAngle = 0;
-        const tables = document.querySelectorAll('.table-card');
-        const totalTables = tables.length;
-        
-        // Update carousel position
-        const updateCarousel = () => {
-            tables.forEach((table, index) => {
-                const angle = (index * (360 / totalTables)) + currentAngle;
-                table.style.transform = `rotateY(${angle}deg) translateZ(400px)`;
-            });
-        };
-    
-        // Add click event to rotate the carousel
-        document.querySelector('.carousel-container').addEventListener('click', () => {
-            currentAngle -= 72;  // Adjust angle for each click
-            updateCarousel();
-        });
-    
-        updateCarousel();  // Initialize carousel positions
-    </script>
-    
-    <!-- Tailwind CSS Styles -->
-    <style>
-        .perspective {
-            perspective: 1000px;
-        }
-        .carousel-container {
-            transform-style: preserve-3d;
-            transition: transform 1s;
-            display: flex;
-            justify-content: center;
-        }
-        .table-card {
-            backface-visibility: hidden;
-        }
-    </style>
-    
-    
-      
-   
-</body>
+    </div>
+</main>
 
-</html>
+<!-- Include necessary scripts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Safely parse the data from Django context into JavaScript
+        var chartData = {
+            labels: ['Electricity', 'Natural Gas', 'Biomass', 'Coal', 'Heating Oil', 'LPG'],
+            values: [
+                parseFloat('{{ data.electricity|default:"0"|safe }}'),
+                parseFloat('{{ data.natural_gas|default:"0"|safe }}'),
+                parseFloat('{{ data.biomass|default:"0"|safe }}'),
+                parseFloat('{{ data.coal|default:"0"|safe }}'),
+                parseFloat('{{ data.heating_oil|default:"0"|safe }}'),
+                parseFloat('{{ data.lpg|default:"0"|safe }}')
+            ]
+        };
+
+        // Define chart options
+        var chartOptions = {
+            series: chartData.values,
+            chart: {
+                type: 'pie',
+                height: '100%'  // Set height to 100% to adapt to the container
+            },
+            labels: chartData.labels,
+            colors: ['#1C64F2', '#16BDCA', '#9061F9', '#FDBA8C', '#E74694', '#22c55e'],
+            title: {
+                text: 'Carbon Footprint by Energy Source',
+                align: 'center'
+            },
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        offset: -10,
+                        minAngle: 10
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                dropShadow: {
+                    enabled: false
+                }
+            }
+        };
+
+        // Initialize and render the chart
+        var chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+        chart.render();
+    });
+</script>
 {% endblock %}
